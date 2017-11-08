@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "753972865364",
+    "firebase_url": "https://nerd3punto0.firebaseio.com",
+    "project_id": "nerd3punto0",
+    "storage_bucket": "nerd3punto0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753972865364:android:314eca58366e1f2a",
+        "android_client_info": {
+          "package_name": "com.jhonlopera.nerd30"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753972865364-07rlnor2lb5pl85ur3u1n4ggn95re7jn.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "753972865364-ccbhjf829dhmcpdrldq1ue4s3n85ud71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABhG71UBJ76JjjbQno5zhxbxr_2VQU60U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

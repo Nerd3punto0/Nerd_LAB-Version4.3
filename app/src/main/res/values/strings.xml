@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Nerd 3.0</string>
+    <string name="correo">Correo</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="Iniciar">Iniciar con datos de registro</string>
+    <string name="registrese">Registrese</string>
+    <string name="repcontraseña">Repetir contraseña</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="Cerrar">Cerrar sesion</string>
+    <string name="facebook_app_id">117185448956313</string>
+    <string name="fb_login_protocol_scheme">fb117185448956313</string>
+    <string name="nombre">Nombre</string>
+    <string name="banner">Bienvenido a Nerd 3.0</string>
+    <string name="title_activity_creditos">CreditosActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="aplasta">Aplasta al Topo</string>
+    <string name="cpl4">4 Imágenes 1 Palabra</string>
+    <string name="ct">Concéntrese</string>
+    <string name="title_activity_principal">PrincipalActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="Instruccionescon">El objetivo de este juego es encontrar una palabra que relacione las 4 imágenes que se muestran.  ¡Pero no será tan sencillo! Tu única pista será el número de letras que tenga la palabra.\n</string>
+    <string name="Instruccionesapla">Aplasta al topo es un juego de velocidad de reacción. La idea es simple, aplasta el topo cuando salga del agujero.  ¡Pero ten cuidado!, cada vez será más rápido.\n</string>
+    <string name="Instrucciones4im">El objetivo de este juego es encontrar una palabra que relacione las 4 imágenes que se muestran. ¡Pero no es tan sencillo! Tu única pista es el número de letras que tenga la palabra.\n</string>
+    <string name="cuatroIM">4 imágenes 1 palabra</string>
+    <string name="Concentrese">Concéntrese</string>
+    <string name="Tiempo">Tiempo: </string>
+    <string name="Score">Score: </string>
+    <string name="nombreperfil"> Escriba aquí el nuevo nombre</string>
+    <string name="avisoeliminar">Se eliminara su cuenta de usuario y se perderan todos los datos</string>
+    <string name="cambio">Confirmar cambio</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="cambiarnombreperfil">Cambiar nombre perfil</string>
+
+</resources>
