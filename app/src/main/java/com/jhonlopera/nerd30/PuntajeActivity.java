@@ -27,8 +27,7 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
     private FragmentManager fm;
     private FragmentTransaction ft;
     Jugador jugador;
-    String usuario, nombreusuario, ident, correo, contador;
-    long puntajecuatroimagenes, puntajeconcentrese, puntajetopo;
+    String usuario, contador;
     FragmentTransaction ft2;
     FragmentManager fm2;
     boolean aux;
@@ -60,11 +59,7 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
         SharedPreferences preferencias;
         SharedPreferences.Editor editor_preferencias;
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
-        editor_preferencias=preferencias.edit();
         usuario=preferencias.getString("usuario","No hay usuario");
-        //puntajecuatroimagenes =preferencias.getLong("puntaje4imagenes",0);
-        //puntajeconcentrese=preferencias.getLong("puntajeconcentrese",0);
-        //puntajetopo=preferencias.getLong("puntajetopo",0);
 
         myRef = database.getReference("Contadores");
         myRef.addValueEventListener(new ValueEventListener() {

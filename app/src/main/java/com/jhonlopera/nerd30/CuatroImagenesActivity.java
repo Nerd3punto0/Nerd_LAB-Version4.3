@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -13,9 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CuatroImagenesActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,6 +42,9 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
     long puntaje=0;
     long puntajeaux=0;
     long p;
+    String usuario, contador;
+    DatabaseReference myRef;
+    FirebaseDatabase database;
 
 
     @Override
@@ -98,7 +107,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View v) {
-
+        preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         if(v==bavanzar){
             for (int i=0;i<palabra.length();i++){
                 palabracorrecta+=letras[i].getText();
@@ -125,6 +134,13 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
 
 
                 editor_preferencias.putLong("puntaje4imagenes",puntaje).commit();
+                usuario=preferencias.getString("usuario","No hay usuario");
+                Log.d("usuarioR",usuario);
+                database = FirebaseDatabase.getInstance();
+                myRef = database.getReference("DatosDeUsuario").child(usuario);
+                Map<String, Object> newData = new HashMap<>();
+                newData.put("puntaje4imagenes", String.valueOf(puntaje));
+                myRef.updateChildren(newData);
 
                 score.setText("Score: "+String.valueOf(puntaje));
                 Toast.makeText(this,"GOOD!",Toast.LENGTH_SHORT).show();

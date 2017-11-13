@@ -263,7 +263,7 @@ public class PrincipalActivity extends AppCompatActivity
     public void OpenCuantroImagenes() {
         Intent intent=new Intent(this,CuatroImagenesActivity.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -276,8 +276,6 @@ public class PrincipalActivity extends AppCompatActivity
         myRef.updateChildren(newData);
         editor_preferencias.putString("nombre",nuevonombre).commit();
         modificarbanner();
-
-
     }
 
     @Override
