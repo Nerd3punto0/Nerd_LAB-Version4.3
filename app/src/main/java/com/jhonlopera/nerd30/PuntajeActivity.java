@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -59,7 +58,7 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
         SharedPreferences preferencias;
         SharedPreferences.Editor editor_preferencias;
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
-        usuario=preferencias.getString("usuario","No hay usuario");
+        usuario=preferencias.getString("usuario","No hay usuario perro");
 
         myRef = database.getReference("Contadores");
         myRef.addValueEventListener(new ValueEventListener() {
