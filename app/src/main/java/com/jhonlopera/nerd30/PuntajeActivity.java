@@ -49,18 +49,33 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
         getLayoutInflater().inflate(R.layout.activity_puntajes, contentFrameLayout);
         getSupportActionBar().setTitle("Puntajes");
 
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
         ft.remove(fragment1).commit(); //se remueve el fragment que se inicia por defecto en el oncreate de principal
 
 
-        database = FirebaseDatabase.getInstance();
         SharedPreferences preferencias;
         SharedPreferences.Editor editor_preferencias;
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
-        usuario=preferencias.getString("usuario","No hay usuario perro");
+        editor_preferencias=preferencias.edit();
+        usuario=preferencias.getString("usuario","No hay usuario");
+        database = FirebaseDatabase.getInstance();
 
-        myRef = database.getReference("Contadores");
+        //Pasar solo usuario a los fragments para leer de la base de datos de Firebase en cada uno de ellos
+        args1 = new Bundle();
+        args1.putString("usuario",usuario);
+        fm2=getSupportFragmentManager();
+        ft2=fm2.beginTransaction();
+        ft2.addToBackStack("usuario");
+        //
+
+        /*myRef = database.getReference("Contadores");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -84,6 +99,7 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
                                 puntaje4img[i]=dataSnapshot.child("user"+String.valueOf(i)).child("puntaje4imagenes").getValue().toString();
                                 puntajecon[i]=dataSnapshot.child("user"+String.valueOf(i)).child("puntajeConcentrese").getValue().toString();
                                 puntajetp[i]=dataSnapshot.child("user"+String.valueOf(i)).child("puntajeTopo").getValue().toString();
+                            }
 
                                 args1=new Bundle();
                                 args2=new Bundle();
@@ -97,11 +113,11 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
                                 args2.putStringArray("puntajecon",puntajecon);
                                 args3.putStringArray("jugadores",jugadores);
                                 args3.putStringArray("puntaje4img",puntaje4img);
+
                                 ft2.addToBackStack("jugadores");
                                 ft2.addToBackStack("puntajetp");
                                 ft2.addToBackStack("puntajecon");
                                 ft2.addToBackStack("puntaje4img");
-
 
                                 mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
                                 mViewPager = (ViewPager) findViewById(R.id.container);
@@ -109,8 +125,6 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
 
                                 TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
                                 tabLayout.setupWithViewPager(mViewPager);
-
-                            }
                         }
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -121,7 +135,7 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-        });
+        });*/
 
     }
 
@@ -140,11 +154,13 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
                     return fragment;
                 case 1:
                     fragment2 = new CreditosCtFragment();
-                    fragment2.setArguments(args2);
+                    //fragment2.setArguments(args2);
+                    fragment2.setArguments(args1);
                     return fragment2;
                 case 2:
                     fragment3 = new CreditosCPULFragment();
-                    fragment3.setArguments(args3);
+                    //fragment3.setArguments(args3);
+                    fragment3.setArguments(args1);
                     return fragment3;
                 default:return null;
             }
