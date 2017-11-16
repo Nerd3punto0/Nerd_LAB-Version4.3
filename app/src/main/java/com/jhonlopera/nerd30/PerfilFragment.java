@@ -142,6 +142,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
         else{
             Toast.makeText(getActivity(),"ADIOS",Toast.LENGTH_LONG).show();
             nada.setVisibility(View.GONE);
+
         }
 
     }
