@@ -115,7 +115,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(),"Seguro tu madre no te quiere",Toast.LENGTH_SHORT).show();
         }
         else if(counter==11){
-            Toast.makeText(getActivity(),"Ok, fuera de aquí...",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"Ok, fuera de aquí... ",Toast.LENGTH_SHORT).show();
             TimerTask task =new TimerTask() {
                 @Override
                 public void run() {
