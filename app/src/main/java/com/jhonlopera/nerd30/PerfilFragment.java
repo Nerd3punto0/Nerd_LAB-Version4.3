@@ -112,7 +112,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(),"Comienzo a pensar que solo quieres llamar la atención",Toast.LENGTH_SHORT).show();
         }
         else if(counter==10){
-            Toast.makeText(getActivity(),"Seguro tu madre no te quiere",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"Seguro tu madre no te quiere...",Toast.LENGTH_SHORT).show();
         }
         else if(counter==11){
             Toast.makeText(getActivity(),"Ok, fuera de aquí...",Toast.LENGTH_SHORT).show();
