@@ -1,8 +1,6 @@
 package com.jhonlopera.nerd30;
 
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,8 +11,7 @@ import android.widget.TextView;
 
 public class CreditosTpFragment extends Fragment {
 
-    //String jugadores [] = {"No hay jugador","No hay jugador","No hay jugador","No hay jugador","No hay jugador"};
-    //String puntajetp [] = {"0","0","0","0","0"};
+
     String jugadores [] = new String[5];
     String puntajetp[] = new String[5];
     TextView tjugador1, tjugador2, tjugador3, tjugador4, tjugador5;
