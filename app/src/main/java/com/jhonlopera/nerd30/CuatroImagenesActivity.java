@@ -14,8 +14,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,6 +34,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
     Chronometer tiempo;
     SharedPreferences preferencias;
     SharedPreferences.Editor editor_preferencias;
+    String nivel;
     int level;
     int casillanumero=0;
     final Button botones[]=new Button[10];
@@ -90,7 +94,28 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
         bavanzar=(Button) findViewById(R.id.bavanzar);
         bdel=(Button) findViewById(R.id.bdel);
 
-        level=preferencias.getInt("level",1);
+
+        usuario=preferencias.getString("usuario","No hay usuario");
+        //Log.d("usuarioR",usuario);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("DatosDeUsuario").child(usuario);
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nivel=(dataSnapshot.child("nivel4img").getValue().toString());
+                if(!nivel.equals(null)){
+                    level=Integer.valueOf(nivel);
+                }
+                editor_preferencias.putInt("nivel4img",level).apply();
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        level=preferencias.getInt("nivel4img",1);
         //level=1;
         palabra=cargarnivel(level);
 
@@ -107,7 +132,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+        //preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         if(v==bavanzar){
             for (int i=0;i<palabra.length();i++){
                 palabracorrecta+=letras[i].getText();
@@ -134,13 +159,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
 
 
                 editor_preferencias.putLong("puntaje4imagenes",puntaje).commit();
-                usuario=preferencias.getString("usuario","No hay usuario");
-                Log.d("usuarioR",usuario);
-                database = FirebaseDatabase.getInstance();
-                myRef = database.getReference("DatosDeUsuario").child(usuario);
-                Map<String, Object> newData = new HashMap<>();
-                newData.put("puntaje4imagenes", String.valueOf(puntaje));
-                myRef.updateChildren(newData);
 
                 score.setText("Score: "+String.valueOf(puntaje));
                 Toast.makeText(this,"GOOD!",Toast.LENGTH_SHORT).show();
@@ -156,14 +174,21 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
                 if (level==5){
                     level=1;
                     puntaje=0;
-                    editor_preferencias.putInt("level",level).commit();
+                    editor_preferencias.putInt("nivel4img",level).commit();
                     editor_preferencias.putLong("puntaje4imagenes",puntaje).commit();
                     score.setText("Score: " +puntaje);
                 }else{
                     level++;
                 }
 
-                editor_preferencias.putInt("level",level).commit();
+                //database = FirebaseDatabase.getInstance();
+                myRef = database.getReference("DatosDeUsuario").child(usuario);
+                Map<String, Object> newData = new HashMap<>();
+                newData.put("puntaje4imagenes", String.valueOf(puntaje));
+                newData.put("nivel4img",String.valueOf(level));
+                myRef.updateChildren(newData);
+
+                editor_preferencias.putInt("nivel4img",level).commit();
                 palabra=cargarnivel(level);
                 palabracorrecta="";
                 casillanumero=0;

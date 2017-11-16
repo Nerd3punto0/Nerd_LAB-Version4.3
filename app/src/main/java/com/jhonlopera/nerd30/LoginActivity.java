@@ -51,12 +51,13 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor_preferencias;
     int silog,contador4imagenes;
     Jugador jugador;
+    int nivel4img, nivelcon, niveltopo;
 
     //Para trabajar con firebase
     DatabaseReference myRef;
     FirebaseDatabase database;
     ValueEventListener listener;
-    long punaje4imagenes,puntajeConcentrese,puntajeTopo;
+    long puntaje4imagenes,puntajeConcentrese,puntajeTopo;
 
 
     @Override
@@ -74,9 +75,12 @@ public class LoginActivity extends AppCompatActivity {
         //se declara instancia el editor de "Preferencias"
         editor_preferencias = preferencias.edit();
         //Cargar puntajes
-        punaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
+        puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
         puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
         puntajeTopo=preferencias.getLong("puntajeTopo",0);
+        nivel4img=preferencias.getInt("nivel4img",1);
+        nivelcon=preferencias.getInt("nivelcon",1);
+        niveltopo=preferencias.getInt("niveltopo",1);
 
         //-------------------------------------------------------
         //Si el logggin es con el registro de usuario
@@ -255,7 +259,8 @@ public class LoginActivity extends AppCompatActivity {
                         contador4imagenes = Integer.parseInt(id);
                         //Añadir un un usuario
                         myRef = database.getReference("DatosDeUsuario").child("user" + id);
-                        jugador = new Jugador("user" + id, correoR, nombreR, punaje4imagenes,puntajeConcentrese,puntajeTopo);
+                        jugador = new Jugador("user" + id, correoR, nombreR, puntaje4imagenes,puntajeConcentrese,puntajeTopo,
+                                nivel4img, nivelcon, niveltopo);
                         myRef.setValue(jugador);
 
                         //Guardo el id del jugador en preferencias
@@ -279,7 +284,8 @@ public class LoginActivity extends AppCompatActivity {
                                     if(correofirebase.equals(" ")){
                                         //Añadir un un usuario
                                         myRef = database.getReference("DatosDeUsuario").child("user" + String.valueOf(i));
-                                        jugador = new Jugador("user" + String.valueOf(i), correoR, nombreR, punaje4imagenes,puntajeConcentrese,puntajeTopo);
+                                        jugador = new Jugador("user" + String.valueOf(i), correoR, nombreR, puntaje4imagenes,puntajeConcentrese,puntajeTopo,
+                                                nivel4img, nivelcon, niveltopo);
                                         myRef.setValue(jugador);
                                         editor_preferencias.putString("usuario","user"+String.valueOf(i)).commit();//Guardo el id del jugador en preferencias
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
@@ -306,7 +312,8 @@ public class LoginActivity extends AppCompatActivity {
                                     contador4imagenes = Integer.parseInt(id);
                                     //Añadir un un usuario
                                     myRef = database.getReference("DatosDeUsuario").child("user" + id);
-                                    jugador = new Jugador("user" + id, correoR, nombreR, punaje4imagenes,puntajeConcentrese,puntajeTopo);
+                                    jugador = new Jugador("user" + id, correoR, nombreR, puntaje4imagenes,puntajeConcentrese,puntajeTopo,
+                                            nivel4img, nivelcon, niveltopo);
                                     myRef.setValue(jugador);
                                     editor_preferencias.putString("usuario","user"+id).commit();//Guardo el id del jugador en preferencias
                                     //Actualizo el numero de usuarios en la base de datos
