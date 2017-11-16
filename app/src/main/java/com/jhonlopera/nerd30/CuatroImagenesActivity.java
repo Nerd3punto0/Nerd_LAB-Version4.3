@@ -1,11 +1,12 @@
 package com.jhonlopera.nerd30;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -40,7 +41,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
     final Button botones[]=new Button[10];
     final  TextView letras[] =new TextView[7];
     TextView score;
-
+    private MediaPlayer player;
     String palabra;
     String palabracorrecta="";
     long puntaje=0;
@@ -58,6 +59,9 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
 
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
+        player = MediaPlayer.create(this, R.raw.sonido1);
+        player.setLooping(true);
+        player.start();
 
 
         tiempo=(Chronometer) findViewById(R.id.tiempo);
@@ -177,6 +181,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
                     editor_preferencias.putInt("nivel4img",level).commit();
                     editor_preferencias.putLong("puntaje4imagenes",puntaje).commit();
                     score.setText("Score: " +puntaje);
+
                 }else{
                     level++;
                 }
@@ -199,10 +204,8 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
 
         }
         else if(v==bdel){
-
             casillanumero=0;
             palabracorrecta="";
-
             for (int i=0;i<10;i++){
                 botones[i].setVisibility(View.VISIBLE);
             }
@@ -210,13 +213,10 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
             for (int j=0;j<palabra.length();j++){
                 letras[j].setText("");
             }
-
-
         }
         else {
 
             for (int i=0;i<10;i++){
-
                 if(casillanumero<7){
                     if(v==botones[i]){
                         letras[casillanumero].setText(botones[i].getText());
@@ -224,8 +224,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
                         casillanumero++;
                     }
                 }
-
-
             }
         }
     }
@@ -351,15 +349,17 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
     }
 
     private static String shuffle(String str) {
-
         List<String> letters = Arrays.asList(str.split(""));
         Collections.shuffle(letters);
-
         String salida = "";
         for (String s : letters)
             salida += s;
-
         return salida;
-
+    }
+    public void onBackPressed(){
+        player.stop();
+        Intent intent=new Intent(this,PrincipalActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

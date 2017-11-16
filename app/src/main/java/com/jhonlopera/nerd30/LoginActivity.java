@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
     //Para trabajar con firebase
     DatabaseReference myRef;
     FirebaseDatabase database;
-    ValueEventListener listener;
     long puntaje4imagenes,puntajeConcentrese,puntajeTopo;
 
 

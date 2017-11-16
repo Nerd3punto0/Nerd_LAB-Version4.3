@@ -240,6 +240,7 @@ public class PrincipalActivity extends AppCompatActivity
         ft.replace(R.id.frameprincipal, fragment).commit();
         getSupportActionBar().setTitle("Asociación");
 
+
     }
 
     @Override
@@ -262,6 +263,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public void OpenCuantroImagenes() {
         Intent intent=new Intent(this,CuatroImagenesActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
