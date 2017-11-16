@@ -1,7 +1,5 @@
 package com.jhonlopera.nerd30;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -40,6 +38,7 @@ public class CreditosCtFragment extends Fragment {
         tjugador3 = (TextView) view.findViewById(R.id.tjugador3);
         tjugador4 = (TextView) view.findViewById(R.id.tjugador4);
         tjugador5 = (TextView) view.findViewById(R.id.tjugador5);
+
 
         database = FirebaseDatabase.getInstance();
         Bundle bundle=getArguments();

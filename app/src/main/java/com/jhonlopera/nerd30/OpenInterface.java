@@ -12,4 +12,6 @@ public interface OpenInterface {
     void OpenCuantroImagenes();
     void cambiarnombre(String nuevonombre);
     void eliminardatos();
+    void cerrarjuego();
+    void guardarpreferencias(int contadorbroma);
 }

@@ -77,8 +77,7 @@ public class PrincipalActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         tvnombre = (TextView) headerView.findViewById(R.id.headernombre);
         Foto_perfil_Header = (ImageView) headerView.findViewById(R.id.imagenheader);
-        modificarbanner();
-
+        modificarbanner(); //modifica nombre y foto de perfil del navdrawer
         navigationView.setNavigationItemSelectedListener(this);
 
         fm = getSupportFragmentManager();
@@ -127,16 +126,19 @@ public class PrincipalActivity extends AppCompatActivity
             else{
                 foto=null;
             }
+            int contadorbroma=preferencias.getInt("contadorbroma",1);
             ft = fm.beginTransaction();
             Bundle args=new Bundle();
             fragment = new PerfilFragment();
             args.putString("nombre",nombreR);
             args.putString("correo",correoR);
             args.putString("foto",foto);
+            args.putInt("contadorbroma",contadorbroma);
             fragment.setArguments(args);
             ft.addToBackStack("nombre");
             ft.addToBackStack("correo");
             ft.addToBackStack("foto");
+            ft.addToBackStack("contadorbroma");
             getSupportActionBar().setTitle(item.getTitle());
             ft.replace(R.id.frameprincipal, fragment).commit();
             FragmentTransaction = false;
@@ -294,7 +296,23 @@ public class PrincipalActivity extends AppCompatActivity
         newData.put("puntajeTopo",0);
         myRef.updateChildren(newData);
 
+    }
+
+    @Override
+    public void cerrarjuego() {
+
+        finish();
+        System.exit(0);
 
     }
+
+    @Override
+    public void guardarpreferencias(int contadorbroma) {
+
+        editor_preferencias.putInt("contadorbroma",contadorbroma).commit();
+
+    }
+
+
 }
 
