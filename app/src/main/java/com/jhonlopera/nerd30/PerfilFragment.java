@@ -44,6 +44,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
         nada.setOnClickListener(this);
         cambiarnombres(nombreR,correoR);
 
+
         if (foto!=null){
             try {
                 loadImageFromUrl(foto);
