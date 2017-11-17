@@ -36,5 +36,6 @@
     <string name="cambio">Confirmar cambio</string>
     <string name="cancelar">Cancelar</string>
     <string name="cambiarnombreperfil">Cambiar nombre perfil</string>
+    <string name="textobienvenida">Para comenzar a jugar es necesario iniciar sesion con tu cuenta de google.(Asegurate de tener coneccion)</string>
 
 </resources>

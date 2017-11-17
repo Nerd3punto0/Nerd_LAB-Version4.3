@@ -1,6 +1,8 @@
 package com.jhonlopera.nerd30;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -22,9 +24,6 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
     public ConfiguracionFragment() {
         // Required empty public constructor
     }
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,15 +79,32 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
                 Toast.makeText(getContext(),"Cambio exitoso",Toast.LENGTH_SHORT).show();
             }
         }if(v==eliminar){
-            editarnombre.setVisibility(View.GONE);
-            lineareliminarc.setVisibility(View.VISIBLE);
 
-        }if(v==confirmareliminar){
-            lineareliminarc.setVisibility(View.GONE);
-            openInterface.eliminardatos();
-            Toast.makeText(getContext(),"Usuario eliminado",Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+            builder.setTitle("Advertencia");
+            builder.setMessage("¿Estas seguro que deseas eliminar tu cuenta?\nSe perderan todos tus datos");
+            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    openInterface.eliminardatos();
+                    Toast.makeText(getContext(),"Usuario eliminado",Toast.LENGTH_SHORT).show();
+                    openInterface.cerrarSesion();
 
-        }
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+
+                }
+            });
+
+            AlertDialog dialog= builder.create();
+            dialog.show();
+            }
+
+
 
     }
 }

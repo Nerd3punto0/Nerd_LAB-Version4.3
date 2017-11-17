@@ -75,7 +75,6 @@
             android:layout_weight="1"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp">
-
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
@@ -116,4 +115,3 @@
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
-

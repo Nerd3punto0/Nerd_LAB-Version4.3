@@ -253,7 +253,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(id.equals("0")){// Si no hay ningun usuario en la base de datos simplemente se agrega
 
-
                         Toast.makeText(getApplicationContext(),"Se creado un nuevo usuario", Toast.LENGTH_SHORT).show();
                         contador4imagenes = Integer.parseInt(id);
                         //Añadir un un usuario

@@ -216,7 +216,10 @@ public class PrincipalActivity extends AppCompatActivity
         tvnombre.setText(nombreR);
         if (log.equals("facebook")||log.equals("google")){
             foto=preferencias.getString("foto",null);
-            Glide.with(this).load(foto).transform(new CircleTransform(this)).into(Foto_perfil_Header);
+            if(foto==null){
+                Foto_perfil_Header.setImageDrawable(getResources().getDrawable(R.drawable.perfil5));
+            } else{
+            Glide.with(this).load(foto).transform(new CircleTransform(this)).into(Foto_perfil_Header);}
         }
         else {
             Foto_perfil_Header.setImageDrawable(getResources().getDrawable(R.drawable.perfil5));
@@ -300,23 +303,31 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void cerrarjuego() {
-
         finish();
         System.exit(0);
-
     }
 
     @Override
     public void guardarpreferencias(int contadorbroma) {
-
         editor_preferencias.putInt("contadorbroma",contadorbroma).commit();
-
     }
 
     @Override
     public void OpenConcentrese() {
         Intent intent=new Intent(this,ConcentreseActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void cerrarSesion() {
+        silog=0;
+        editor_preferencias.putInt("silog",silog);
+        editor_preferencias.commit();
+        signOut(); //cerrar sesion en google
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 
 
