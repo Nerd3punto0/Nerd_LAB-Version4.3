@@ -37,12 +37,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CuatroImagenesActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SustoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SustoActivity"
             android:label="Te lo adverti"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            >
-
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+        <activity android:name=".ConcentreseActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

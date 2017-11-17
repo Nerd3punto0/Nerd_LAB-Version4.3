@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.jhonlopera.nerd30.CreditosCPULFragment"
-    android:background="@color/lightgray">
+    android:background="@drawable/fondo1234">
 
 <ScrollView
     android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:gravity="center"
             android:textSize="30sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_margin="5dp"/>
         <TextView
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
             android:gravity="left"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_margin="5dp"
             android:id="@+id/tjugador1"/>
         <TextView
@@ -41,7 +41,7 @@
             android:gravity="left"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_margin="5dp"
             android:id="@+id/tjugador2"/>
         <TextView
@@ -51,7 +51,7 @@
             android:gravity="left"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_margin="5dp"
             android:id="@+id/tjugador3"/>
 
@@ -62,7 +62,7 @@
             android:layout_margin="5dp"
             android:gravity="left"
             android:text="4. Jugador 4 "
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -73,7 +73,7 @@
             android:gravity="left"
             android:textSize="25sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:layout_margin="5dp"
             android:id="@+id/tjugador5"/>
 

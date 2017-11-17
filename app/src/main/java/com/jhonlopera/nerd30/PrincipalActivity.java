@@ -250,7 +250,7 @@ public class PrincipalActivity extends AppCompatActivity
         Fragment fragment=new MenuConcentreseFragment();
         ft = fm.beginTransaction();
         ft.replace(R.id.frameprincipal, fragment).commit();
-        getSupportActionBar().setTitle("Concentración");
+        getSupportActionBar().setTitle("Memoria");
     }
 
     @Override
@@ -267,7 +267,7 @@ public class PrincipalActivity extends AppCompatActivity
         Intent intent=new Intent(this,CuatroImagenesActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -311,6 +311,12 @@ public class PrincipalActivity extends AppCompatActivity
 
         editor_preferencias.putInt("contadorbroma",contadorbroma).commit();
 
+    }
+
+    @Override
+    public void OpenConcentrese() {
+        Intent intent=new Intent(this,ConcentreseActivity.class);
+        startActivity(intent);
     }
 
 
