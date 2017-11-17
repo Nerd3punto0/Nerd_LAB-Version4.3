@@ -1,9 +1,5 @@
 package com.jhonlopera.nerd30;
 
-/**
- * Created by Jhon on 30/10/2017.
- */
-
 public class Jugador {
     private String id, correo, nombre;
     private long puntaje4imagenes,puntajeConcentrese,puntajeTopo;
