@@ -172,26 +172,24 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if(correofirebase.equals(" ")){
                                         contadordeespacios=i;
-
                                     }
 
                                     if(correofirebase.equals(correoR)){
                                         numerito=i;
-                                        // Se almacena el nombre ya que se puedo haber cambiado
-                                        puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
-                                        puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
-                                        puntajeTopo=preferencias.getLong("puntajeTopo",0);
-                                        nivel4img=preferencias.getInt("nivel4img",1);
-                                        nivelcon=preferencias.getInt("nivelcon",1);
-                                        niveltopo=preferencias.getInt("niveltopo",1);
-
+                                        // Se almacena el nombre ya que se puedo haber y los puntajes
                                         nombreR=dataSnapshot.child("user"+String.valueOf(numerito)).child("nombre").getValue().toString();
                                         puntaje4imagenes=Long.parseLong(dataSnapshot.child("user"+String.valueOf(numerito)).child("puntaje4imagenes").getValue().toString());
+                                        editor_preferencias.putLong("puntaje4imagenes",puntaje4imagenes).commit();
                                         puntajeConcentrese=Long.parseLong(dataSnapshot.child("user"+String.valueOf(numerito)).child("puntajeConcentrese").getValue().toString());
+                                        editor_preferencias.putLong("puntajeConcentrese",puntajeConcentrese).commit();
                                         puntajeTopo=Long.parseLong(dataSnapshot.child("user"+String.valueOf(numerito)).child("puntajeTopo").getValue().toString());
+                                        editor_preferencias.putLong("puntajeTopo",puntajeTopo).commit();
                                         nivel4img= Integer.parseInt(dataSnapshot.child("user" + String.valueOf(numerito)).child("nivel4img").getValue().toString());
+                                        editor_preferencias.putInt("nivel4img",nivel4img).commit();
                                         nivelcon= Integer.parseInt(dataSnapshot.child("user" + String.valueOf(numerito)).child("nivelcon").getValue().toString());
+                                        editor_preferencias.putInt("nivelcon",nivelcon).commit();
                                         niveltopo= Integer.parseInt(dataSnapshot.child("user" + String.valueOf(numerito)).child("niveltopo").getValue().toString());
+                                        editor_preferencias.putInt("niveltopo",niveltopo).commit();
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
 
 
