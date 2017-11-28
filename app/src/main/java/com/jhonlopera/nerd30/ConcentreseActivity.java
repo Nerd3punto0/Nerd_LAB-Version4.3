@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -63,6 +64,7 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_concentrese);
 
+        //Toast.makeText(this, "onCreateJuego", Toast.LENGTH_SHORT).show();
         fm=getSupportFragmentManager();
         ft=fm.beginTransaction();
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.frameprincipal);
@@ -75,8 +77,8 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         tpuntaje=(TextView) findViewById(R.id.tpuntaje);
         tpuntaje.setText("Puntaje: "+String.valueOf(puntaje));
 
-        //Enlazo botones con variables------
-        fondocon =(LinearLayout) findViewById(R.id.fondoconcentrese);
+        //Enlazo widgets con variables tipo botón------
+        //fondocon =(LinearLayout) findViewById(R.id.fondoconcentrese);
 
         for(int i=0;i<42;i++){
             button[i] = (Button) findViewById(buttonsId[i]);
@@ -90,11 +92,13 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         editor_preferencias = preferencias.edit();
 
         cargarNivel();
+        //Toast.makeText(this, "Se cargó el nivel", Toast.LENGTH_SHORT).show();
     }
 
     private void cargarNivel() {
         //Obtengo el nivel del juego de preferencias
         nivelcon=preferencias.getInt("nivelCon",1);
+        //Log.d("nivelconCargar",String.valueOf(nivelcon));
 
         //Inicia la interfaz del juego según el nivel
         //Nivel 1: 3x4
@@ -108,11 +112,12 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                 mostrar.add(i+1,pictures.get(j));
             }
             Collections.shuffle(mostrar);
+            Collections.shuffle(mostrar);
+            Collections.shuffle(mostrar);
 
             for(int i=0;i<42;i++){
                 if((i>12 && i<17)||(i>18 && i<23)||(i>24 && i<29)){
                     button[i].setVisibility(View.VISIBLE);
-                    button[i].setBackgroundColor(Color.WHITE);
                     button[i].setBackgroundResource(imagenporDefecto);
                     button[i].setOnClickListener(this);
                     button[i].setTag("Button"+numTag);
@@ -133,6 +138,8 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                 mostrar.add(i,pictures.get(j));
                 mostrar.add(i+1,pictures.get(j));
             }
+            Collections.shuffle(mostrar);
+            Collections.shuffle(mostrar);
             Collections.shuffle(mostrar);
 
             for(int i=0;i<42;i++){
@@ -159,6 +166,8 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                 mostrar.add(i+1,pictures.get(j));
             }
             Collections.shuffle(mostrar);
+            Collections.shuffle(mostrar);
+            Collections.shuffle(mostrar);
 
             for(int i=0;i<42;i++){
                 if(i>5 && i<36){
@@ -184,6 +193,8 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                 mostrar.add(i+1,pictures.get(j));
             }
             Collections.shuffle(mostrar);
+            Collections.shuffle(mostrar);
+            Collections.shuffle(mostrar);
 
             for(int i=0;i<42;i++){
                 button[i].setVisibility(View.VISIBLE);
@@ -197,17 +208,21 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
 
     @Override
     public void onClick(View v) {
+        //Toast.makeText(this, "Estoy en OnClick", Toast.LENGTH_SHORT).show();
         auxv=v;
         String tag = String.valueOf(v.getTag());
-
+        //Log.d("tagBoton",tag);
         int auxpos=0;
         boolean verificar=false;
+
+        //Log.d("nivelcononClick",String.valueOf(nivelcon));
 
         //Se define numero de botones por nivel
         if(nivelcon==1) numeroBotones=12;
         else if(nivelcon==2) numeroBotones=20;
         else if(nivelcon==3) numeroBotones=30;
-        else if(nivelcon==4) numeroBotones=42;
+        else if(nivelcon==4 || nivelcon==5) numeroBotones=42;
+        //Log.d("numeroBotones",String.valueOf(numeroBotones));
 
         //Cuando se presiona un nivel del botón, se verifica cual botón se presionó y se toma una acción;
         for(int i=0;i<numeroBotones;i++){
@@ -253,7 +268,7 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                 button[i].setEnabled(false);
             }
 
-            CountDownTimer countDownTimer = new CountDownTimer(1000,500) {
+            CountDownTimer countDownTimer = new CountDownTimer(500,100) {
                 @Override
                 public void onTick(long millisUntilFinished) {
                     //Toast.makeText(ConcentreseActivity.this, "acá sí", Toast.LENGTH_SHORT).show();

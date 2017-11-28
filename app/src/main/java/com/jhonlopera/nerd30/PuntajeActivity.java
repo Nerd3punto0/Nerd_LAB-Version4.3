@@ -75,68 +75,6 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
         ft2.addToBackStack("usuario");
         //
 
-        /*myRef = database.getReference("Contadores");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                contador=dataSnapshot.child("contador").getValue().toString();
-
-                if(Integer.valueOf(contador)<=0){
-                    Toast.makeText(getApplicationContext(),"No hay usuarios",Toast.LENGTH_LONG).show();
-                } else{
-                    if(Integer.valueOf(contador)>5)
-                        valorfinal=5;
-                    else
-                        valorfinal=Integer.valueOf(contador);
-
-                    myRef = database.getReference("DatosDeUsuario");
-                    myRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            for(int i=0; i<valorfinal; i++){
-                                jugadores[i]=dataSnapshot.child("user"+String.valueOf(i)).child("nombre").getValue().toString();
-                                puntaje4img[i]=dataSnapshot.child("user"+String.valueOf(i)).child("puntaje4imagenes").getValue().toString();
-                                puntajecon[i]=dataSnapshot.child("user"+String.valueOf(i)).child("puntajeConcentrese").getValue().toString();
-                                puntajetp[i]=dataSnapshot.child("user"+String.valueOf(i)).child("puntajeTopo").getValue().toString();
-                            }
-
-                                args1=new Bundle();
-                                args2=new Bundle();
-                                args3=new Bundle();
-                                fm2=getSupportFragmentManager();
-                                ft2=fm2.beginTransaction();
-
-                                args1.putStringArray("jugadores",jugadores);
-                                args1.putStringArray("puntajetp",puntajetp);
-                                args2.putStringArray("jugadores",jugadores);
-                                args2.putStringArray("puntajecon",puntajecon);
-                                args3.putStringArray("jugadores",jugadores);
-                                args3.putStringArray("puntaje4img",puntaje4img);
-
-                                ft2.addToBackStack("jugadores");
-                                ft2.addToBackStack("puntajetp");
-                                ft2.addToBackStack("puntajecon");
-                                ft2.addToBackStack("puntaje4img");
-
-                                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                                mViewPager = (ViewPager) findViewById(R.id.container);
-                                mViewPager.setAdapter(mSectionsPagerAdapter);
-
-                                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-                                tabLayout.setupWithViewPager(mViewPager);
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });*/
-
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
