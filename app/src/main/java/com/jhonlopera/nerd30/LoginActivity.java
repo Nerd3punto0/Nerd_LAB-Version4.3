@@ -54,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
     private long puntaje4imagenes,puntajeConcentrese,puntajeTopo;
 
     ProgressBar spinner;
+    private AlertDialog.Builder mBuilder;
+    private AlertDialog dialog;
 
 
     @Override
@@ -96,6 +98,13 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+        mBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater1 = this.getLayoutInflater();
+        View mView = inflater1.inflate(R.layout.barra_de_carga,null);
+        mBuilder.setView(mView);
+        dialog = mBuilder.create();
+        dialog.show();
     }
 
     @Override
@@ -116,12 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (result.isSuccess()) {
 
-            final AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
-            LayoutInflater inflater1 = this.getLayoutInflater();
-            View mView = inflater1.inflate(R.layout.barra_de_carga,null);
-            mBuilder.setView(mView);
-            final AlertDialog dialog = mBuilder.create();
-            dialog.show();
+
 
             GoogleSignInAccount acct = result.getSignInAccount();
             correoR = acct.getEmail();//obtener email

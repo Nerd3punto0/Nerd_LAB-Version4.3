@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CuatroImagenesActivity extends AppCompatActivity implements  View.OnClickListener {
+public class CuatroImagenesActivity extends AppCompatActivity implements   View.OnClickListener {
 
     ImageView im1,im2,im3,im4;
     Button bavanzar,bdel;
@@ -37,6 +32,8 @@ public class CuatroImagenesActivity extends AppCompatActivity implements  View.O
     Chronometer tiempo;
     SharedPreferences preferencias;
     SharedPreferences.Editor editor_preferencias;
+    DatabaseReference myRef;
+    FirebaseDatabase database;
     String nivel;
     int level;
     int casillanumero=0;
@@ -50,22 +47,14 @@ public class CuatroImagenesActivity extends AppCompatActivity implements  View.O
     long puntajeaux=0;
     long p;
     String usuario, contador;
-    DatabaseReference myRef;
-    FirebaseDatabase database;
-    FragmentManager fm;
-    FragmentTransaction ft;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuatro_imagenes);
-        //FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.frameprincipal);
-        //fm=getSupportFragmentManager();
-        //ft=fm.beginTransaction();
-        //getLayoutInflater().inflate(R.layout.activity_cuatro_imagenes, contentFrameLayout);
-        //ft.remove(fragment1).commit(); //se remueve el fragment que se inicia por defecto en el oncreate de principal
-        //getSupportActionBar().setTitle("4 imagenes 1 palabra");
+
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
         player = MediaPlayer.create(this, R.raw.sonido1);
@@ -75,7 +64,16 @@ public class CuatroImagenesActivity extends AppCompatActivity implements  View.O
 
         tiempo=(Chronometer) findViewById(R.id.tiempo);
         score=(TextView) findViewById(R.id.tscore);
+
         puntaje=preferencias.getLong("puntaje4imagenes",0);
+        usuario=preferencias.getString("usuario","No hay usuario");
+        level=preferencias.getInt("nivel4img",1);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("DatosDeUsuario").child(usuario);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("puntaje4imagenes", String.valueOf(puntaje));
+        newData.put("nivel4img",String.valueOf(level));
+        myRef.updateChildren(newData);
         //puntaje=0;
         score.setText("Score: "+ String.valueOf(puntaje));
 
@@ -107,28 +105,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements  View.O
         bavanzar=(Button) findViewById(R.id.bavanzar);
         bdel=(Button) findViewById(R.id.bdel);
 
-
-        usuario=preferencias.getString("usuario","No hay usuario");
-        //Log.d("usuarioR",usuario);
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("DatosDeUsuario").child(usuario);
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                nivel=(dataSnapshot.child("nivel4img").getValue().toString());
-                if(!nivel.equals(null)){
-                    level=Integer.valueOf(nivel);
-                }
-                editor_preferencias.putInt("nivel4img",level).apply();
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-        level=preferencias.getInt("nivel4img",1);
-        //level=1;
         palabra=cargarnivel(level);
 
         tiempo.start();
@@ -163,6 +139,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements  View.O
                         p=p-(n-5);
 
                         if(p<=10){
+                            p=10;
                             break;
                         }
                     }
@@ -193,7 +170,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements  View.O
                 }else{
                     level++;
                 }
-
                 //database = FirebaseDatabase.getInstance();
                 myRef = database.getReference("DatosDeUsuario").child(usuario);
                 Map<String, Object> newData = new HashMap<>();

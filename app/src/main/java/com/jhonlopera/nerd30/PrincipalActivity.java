@@ -36,7 +36,7 @@ import java.util.Map;
 public class PrincipalActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OpenInterface{
 
-   private FragmentManager fm;
+    private FragmentManager fm;
     private FragmentTransaction ft;
     DatabaseReference myRef;
     FirebaseDatabase database;
@@ -50,6 +50,7 @@ public class PrincipalActivity extends AppCompatActivity
     SharedPreferences.Editor editor_preferencias;
     int silog;
     Fragment fragment1 ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +61,13 @@ public class PrincipalActivity extends AppCompatActivity
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
 
+
         //Para cerrar cesion con google
         // ________________________________________________________________________________________________
         paralogincongoogle();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -107,7 +108,6 @@ public class PrincipalActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
 
-
         } else {
 
             if(aux==0){
@@ -134,9 +134,9 @@ public class PrincipalActivity extends AppCompatActivity
         boolean FragmentTransaction = false;
         Fragment fragment = null;
         Intent intent;
+        // Si se abre el navigation se para la musica
 
         if (id == R.id.nav_main) {
-
             fragment = new MenuPrincipalFragment();
             FragmentTransaction = true;
 
@@ -213,7 +213,6 @@ public class PrincipalActivity extends AppCompatActivity
             FragmentTransaction = true;
         }
 
-
         if(FragmentTransaction){
             getSupportFragmentManager().beginTransaction().replace(R.id.frameprincipal,fragment).commit();
             item.setChecked(true);
@@ -224,6 +223,7 @@ public class PrincipalActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     private void signOut() {
 
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -290,15 +290,14 @@ public class PrincipalActivity extends AppCompatActivity
         ft = fm.beginTransaction();
         ft.replace(R.id.frameprincipal, fragment).commit();
         getSupportActionBar().setTitle("Velocidad de reacción ");
-
     }
 
     @Override
     public void OpenCuantroImagenes() {
         Intent intent=new Intent(this,CuatroImagenesActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     @Override
@@ -343,6 +342,14 @@ public class PrincipalActivity extends AppCompatActivity
     public void OpenConcentrese() {
         Intent intent=new Intent(this,ConcentreseActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void OpenTopo() {
+        Intent intent=new Intent(this,TopoActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
     @Override

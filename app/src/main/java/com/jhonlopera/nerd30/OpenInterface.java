@@ -15,5 +15,6 @@ public interface OpenInterface {
     void cerrarjuego();
     void guardarpreferencias(int contadorbroma);
     void OpenConcentrese();
+    void OpenTopo();
     void cerrarSesion();
 }
