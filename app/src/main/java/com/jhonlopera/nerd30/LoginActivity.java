@@ -6,9 +6,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -45,11 +48,12 @@ public class LoginActivity extends AppCompatActivity {
     Jugador jugador;
     private int nivel4img, nivelcon, niveltopo;
     int contadordeespacios=0;
-
     //Para trabajar con firebase
     DatabaseReference myRef;
     FirebaseDatabase database;
     private long puntaje4imagenes,puntajeConcentrese,puntajeTopo;
+
+    ProgressBar spinner;
 
 
     @Override
@@ -60,17 +64,14 @@ public class LoginActivity extends AppCompatActivity {
         ecorreo = (EditText) findViewById(R.id.eCorreo);
         econtraseña = (EditText) findViewById(R.id.eContraseña);
 
+
+
+
         // Se define el archivo "Preferencias" donde se almacenaran los valores de las preferencias
         preferencias = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         //se declara instancia el editor de "Preferencias"
         editor_preferencias = preferencias.edit();
-        //Cargar puntajes
-        puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
-        puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
-        puntajeTopo=preferencias.getLong("puntajeTopo",0);
-        nivel4img=preferencias.getInt("nivel4img",1);
-        nivelcon=preferencias.getInt("nivelcon",1);
-        niveltopo=preferencias.getInt("niveltopo",1);
+
 
 
 
@@ -112,8 +113,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        //google
+
         if (result.isSuccess()) {
+
+            final AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater1 = this.getLayoutInflater();
+            View mView = inflater1.inflate(R.layout.barra_de_carga,null);
+            mBuilder.setView(mView);
+            final AlertDialog dialog = mBuilder.create();
+            dialog.show();
+
             GoogleSignInAccount acct = result.getSignInAccount();
             correoR = acct.getEmail();//obtener email
             nombreR = acct.getDisplayName();
@@ -126,8 +135,6 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 foto = urifoto.toString();
             }
-
-            //Firebase
             database = FirebaseDatabase.getInstance();
             myRef = database.getReference("Contadores");
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -191,13 +198,10 @@ public class LoginActivity extends AppCompatActivity {
                                         niveltopo= Integer.parseInt(dataSnapshot.child("user" + String.valueOf(numerito)).child("niveltopo").getValue().toString());
                                         editor_preferencias.putInt("niveltopo",niveltopo).commit();
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
-
-
                                         break;
                                     }
                                     else {
                                         numerito=-1; //-1 cuando el usuario no existe
-
                                     }
                                 }
 
@@ -233,13 +237,13 @@ public class LoginActivity extends AppCompatActivity {
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
                                     }
 
-
                                 }else{
                                     //Almaceno los datos en preferencias para cargarlos en el peril
                                     guardarPreferencias(silog, correoR, nombreR, foto, log);
                                     editor_preferencias.putString("usuario","user"+String.valueOf(numerito)).commit();
                                     Toast.makeText(getApplicationContext(),"Este usuario ya existe", Toast.LENGTH_SHORT).show();
                                 }
+                                dialog.dismiss();
                                 Intent intent = new Intent(LoginActivity.this, PrincipalActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -259,30 +263,20 @@ public class LoginActivity extends AppCompatActivity {
 
 
         } else {
-            // Signed out, show unauthenticated UI.
             Toast.makeText(getApplicationContext(), "Verifique su conexión", Toast.LENGTH_SHORT).show();
-            //finish();
-           // System.exit(0);
         }
     }
 
     private void valores_por_defecto() {
-        puntaje4imagenes = 0;
-        puntajeConcentrese=0;
-        puntajeTopo=0;
-        nivel4img=1;
-        nivelcon=1;
+        puntaje4imagenes = 0; puntajeConcentrese=0; puntajeTopo=0;
+        nivel4img=1; nivelcon=1;
         niveltopo=1;
     }
 
-
     private void signIn() {
-
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-
 
     void guardarPreferencias(int silog, String correo, String nombre, String foto, String log) {
         editor_preferencias.putInt("silog", silog);
@@ -292,8 +286,4 @@ public class LoginActivity extends AppCompatActivity {
         editor_preferencias.putString("log", log);
         editor_preferencias.commit();
     }
-
-
-
-
 }

@@ -40,6 +40,7 @@ public class PrincipalActivity extends AppCompatActivity
     private FragmentTransaction ft;
     DatabaseReference myRef;
     FirebaseDatabase database;
+    int aux=1;
 
     private  String correoR,nombreR,log,foto;
     private ImageView Foto_perfil_Header;
@@ -87,6 +88,23 @@ public class PrincipalActivity extends AppCompatActivity
         getSupportActionBar().setTitle("Menu principal");
         ft.add(R.id.frameprincipal, fragment1).commit();
 
+
+        String usuario = preferencias.getString("usuario", "No hay usuario");
+        Long puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
+        Long puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
+        Long puntajeTopo=preferencias.getLong("puntajeTopo",0);
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("DatosDeUsuario").child(usuario);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("puntaje4imagenes", String.valueOf(puntaje4imagenes));
+        newData.put("puntajeconcentrese", String.valueOf(puntajeConcentrese));
+        newData.put("puntajetopo", String.valueOf(puntajeTopo));
+        myRef.updateChildren(newData);
+
+
+
+
     }
 
     @Override
@@ -95,8 +113,21 @@ public class PrincipalActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
 
+
         } else {
-            super.onBackPressed();
+
+            if(aux==0){
+                fm = getSupportFragmentManager();
+                ft = fm.beginTransaction();
+                Fragment fragment= new MenuPrincipalFragment();
+                getSupportActionBar().setTitle("Menu principal");
+                ft.replace(R.id.frameprincipal, fragment).commit();
+                aux=1;
+                //super.onBackPressed();
+            }else{
+                super.onBackPressed();
+            }
+
         }
     }
 
@@ -104,6 +135,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        aux=0;
         int id = item.getItemId();
         boolean FragmentTransaction = false;
         Fragment fragment = null;
@@ -240,16 +272,17 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public void OpenCuatroImagenesMenu() {
 
+        aux=0;
         Fragment fragment=new Menu4imagenesFragment();
         ft = fm.beginTransaction();
         ft.replace(R.id.frameprincipal, fragment).commit();
         getSupportActionBar().setTitle("Asociación");
 
-
     }
 
     @Override
     public void OpenConcentreseMenu() {
+        aux=0;
         Fragment fragment=new MenuConcentreseFragment();
         ft = fm.beginTransaction();
         ft.replace(R.id.frameprincipal, fragment).commit();
@@ -258,6 +291,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void OpenTopoMenu() {
+        aux=0;
         Fragment fragment=new MenuTopoFragment();
         ft = fm.beginTransaction();
         ft.replace(R.id.frameprincipal, fragment).commit();

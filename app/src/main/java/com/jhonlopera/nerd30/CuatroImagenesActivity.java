@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CuatroImagenesActivity extends AppCompatActivity implements View.OnClickListener {
+public class CuatroImagenesActivity extends AppCompatActivity implements  View.OnClickListener {
 
     ImageView im1,im2,im3,im4;
     Button bavanzar,bdel;
@@ -41,7 +43,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
     final Button botones[]=new Button[10];
     final  TextView letras[] =new TextView[7];
     TextView score;
-    private MediaPlayer player;
+    public MediaPlayer player;
     String palabra;
     String palabracorrecta="";
     long puntaje=0;
@@ -50,13 +52,20 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
     String usuario, contador;
     DatabaseReference myRef;
     FirebaseDatabase database;
+    FragmentManager fm;
+    FragmentTransaction ft;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuatro_imagenes);
-
+        //FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.frameprincipal);
+        //fm=getSupportFragmentManager();
+        //ft=fm.beginTransaction();
+        //getLayoutInflater().inflate(R.layout.activity_cuatro_imagenes, contentFrameLayout);
+        //ft.remove(fragment1).commit(); //se remueve el fragment que se inicia por defecto en el oncreate de principal
+        //getSupportActionBar().setTitle("4 imagenes 1 palabra");
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
         player = MediaPlayer.create(this, R.raw.sonido1);
@@ -111,7 +120,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
                     level=Integer.valueOf(nivel);
                 }
                 editor_preferencias.putInt("nivel4img",level).apply();
-
 
             }
             @Override
@@ -362,4 +370,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements View.On
         startActivity(intent);
         finish();
     }
+
+
 }
