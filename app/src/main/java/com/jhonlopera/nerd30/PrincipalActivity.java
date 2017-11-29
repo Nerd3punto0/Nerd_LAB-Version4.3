@@ -41,12 +41,10 @@ public class PrincipalActivity extends AppCompatActivity
     DatabaseReference myRef;
     FirebaseDatabase database;
     int aux=1;
-
-    private  String correoR,nombreR,log,foto;
+    private  String correoR,nombreR,log,foto,usuario;
     private ImageView Foto_perfil_Header;
     private TextView tvnombre;
-
-
+    private long puntaje4imagenes,puntajeConcentrese,puntajeTopo;
     GoogleApiClient mGoogleApiClient;
     SharedPreferences preferencias;
     SharedPreferences.Editor editor_preferencias;
@@ -65,7 +63,6 @@ public class PrincipalActivity extends AppCompatActivity
         //Para cerrar cesion con google
         // ________________________________________________________________________________________________
         paralogincongoogle();
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -89,10 +86,10 @@ public class PrincipalActivity extends AppCompatActivity
         ft.add(R.id.frameprincipal, fragment1).commit();
 
 
-        String usuario = preferencias.getString("usuario", "No hay usuario");
-        Long puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
-        Long puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
-        Long puntajeTopo=preferencias.getLong("puntajeTopo",0);
+        usuario = preferencias.getString("usuario", "No hay usuario");
+        puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
+        puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
+        puntajeTopo=preferencias.getLong("puntajeTopo",0);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("DatosDeUsuario").child(usuario);
@@ -101,9 +98,6 @@ public class PrincipalActivity extends AppCompatActivity
         newData.put("puntajeconcentrese", String.valueOf(puntajeConcentrese));
         newData.put("puntajetopo", String.valueOf(puntajeTopo));
         myRef.updateChildren(newData);
-
-
-
 
     }
 
@@ -332,7 +326,6 @@ public class PrincipalActivity extends AppCompatActivity
         newData.put("puntajeConcentrese",0);
         newData.put("puntajeTopo",0);
         myRef.updateChildren(newData);
-
     }
 
     @Override
@@ -361,9 +354,5 @@ public class PrincipalActivity extends AppCompatActivity
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
-
     }
-
-
 }
-
