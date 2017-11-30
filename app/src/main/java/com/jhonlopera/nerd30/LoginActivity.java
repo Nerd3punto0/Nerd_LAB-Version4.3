@@ -115,8 +115,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-
         if (result.isSuccess()) {
+
+            mBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater1 = this.getLayoutInflater();
+            View mView = inflater1.inflate(R.layout.barra_de_carga,null);
+            mBuilder.setView(mView);
+            dialog = mBuilder.create();
+            dialog.show();
 
             GoogleSignInAccount acct = result.getSignInAccount();
             correoR = acct.getEmail();//obtener email
@@ -270,12 +276,7 @@ public class LoginActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
-        mBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater1 = this.getLayoutInflater();
-        View mView = inflater1.inflate(R.layout.barra_de_carga,null);
-        mBuilder.setView(mView);
-        dialog = mBuilder.create();
-        dialog.show();
+
     }
 
     void guardarPreferencias(int silog, String correo, String nombre, String foto, String log) {
