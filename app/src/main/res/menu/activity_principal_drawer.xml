@@ -27,6 +27,10 @@
                 android:icon="@drawable/ic_menu_profile"
                 android:title="Perfil" />
             <item
+                android:id="@+id/nav_mapa"
+                android:icon="@drawable/ic_menu_profile"
+                android:title="Mapa" />
+            <item
                 android:id="@+id/nav_cerrarsesion"
                 android:icon="@drawable/ic_menu_profile"
                 android:title="Cerrar sesion" />
