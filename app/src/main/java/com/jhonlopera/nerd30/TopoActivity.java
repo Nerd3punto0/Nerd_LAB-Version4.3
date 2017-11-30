@@ -59,14 +59,14 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
 
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
-        puntaje=preferencias.getLong("puntajetopo",0);
+        puntaje=preferencias.getLong("puntajeTopo",0);
         usuario=preferencias.getString("usuario","No hay usuario");
         level=preferencias.getInt("niveltopo",1);
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("DatosDeUsuario").child(usuario);
         Map<String, Object> newData = new HashMap<>();
-        newData.put("puntajetopo", String.valueOf(puntaje));
+        newData.put("puntajeTopo", String.valueOf(puntaje));
         newData.put("niveltopo",String.valueOf(level));
         myRef.updateChildren(newData);
         //puntaje=0;
@@ -99,6 +99,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
         builder.setNegativeButton("Aun no estoy listo", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                player.stop();
                 Intent intent=new Intent(TopoActivity.this,PrincipalActivity.class);
                 startActivity(intent);
                 finish();

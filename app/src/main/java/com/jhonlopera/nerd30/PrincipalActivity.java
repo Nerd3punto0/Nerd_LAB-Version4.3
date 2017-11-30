@@ -355,6 +355,7 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void OpenTopo() {
+
         Intent intent=new Intent(this,TopoActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -373,7 +374,7 @@ public class PrincipalActivity extends AppCompatActivity
     }
 
     @Override
-    public void actualizarpuntajes(long p4imagenes, Long pconcentrese, Long ptopo) {
+    public void actualizarpuntajes(long p4imagenes, long pconcentrese, long ptopo) {
         usuario = preferencias.getString("usuario", "No hay usuario");
         puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
         puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
@@ -390,6 +391,7 @@ public class PrincipalActivity extends AppCompatActivity
         newData.put("puntajeConcentrese", String.valueOf(puntajeConcentrese+pconcentrese));
         newData.put("puntajeTopo", String.valueOf(puntajeTopo+ptopo));
         myRef.updateChildren(newData);
-
     }
+
+
 }
