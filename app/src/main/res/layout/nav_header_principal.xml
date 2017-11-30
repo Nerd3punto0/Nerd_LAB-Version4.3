@@ -12,20 +12,37 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/imagenheader"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        app:srcCompat="@drawable/logoapp" />
-
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="8px"
-        android:text="Nerd 3.0"
-        android:textSize="20sp"
-        android:id="@+id/headernombre"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:gravity="bottom">
+        <ImageView
+            android:id="@+id/imagenheader"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:srcCompat="@drawable/logoapp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8px"
+            android:text="Nerd 3.0"
+            android:textSize="20sp"
+            android:id="@+id/headernombre"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    </LinearLayout>
+
+
+
+
 
 
 

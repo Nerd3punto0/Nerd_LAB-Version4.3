@@ -39,7 +39,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
     SharedPreferences.Editor editor_preferencias;
     DatabaseReference myRef;
     FirebaseDatabase database;
-    private MediaPlayer player;
+    private MediaPlayer player,aplastado;
     TextView score;
 
 
@@ -51,6 +51,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_topo);
 
         player = MediaPlayer.create(this, R.raw.sonidoparatopo);
+        aplastado=MediaPlayer.create(this,R.raw.aplastado);
         player.setLooping(true);
         player.start();
         contador=0;
@@ -145,6 +146,10 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
         }
         if(aux1-contador<=950 && numeroaux==numeroaux2){
             animacionTopo[numeroaux].stop();
+            //aplastado.stop();
+            aplastado.start();
+
+
             final int numerito=numeroaux;
             Topos[numeroaux].setBackgroundResource(R.drawable.golpe);
             puntaje+=5;
