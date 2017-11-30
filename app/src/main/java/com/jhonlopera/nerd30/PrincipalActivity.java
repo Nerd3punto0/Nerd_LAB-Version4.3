@@ -378,7 +378,6 @@ public class PrincipalActivity extends AppCompatActivity
         editor_preferencias.putLong("puntajeConcentrese",puntajeConcentrese+pconcentrese).apply();
         editor_preferencias.putLong("puntajeTopo",puntajeTopo+ptopo).apply();
 
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("DatosDeUsuario").child(usuario);
         Map<String, Object> newData = new HashMap<>();
