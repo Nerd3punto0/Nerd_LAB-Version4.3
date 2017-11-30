@@ -138,7 +138,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(),"¿Qué debo hacer para que te canses?",Toast.LENGTH_SHORT).show();
         }
         else if(counter==15){
-            Toast.makeText(getActivity(),"Si estas leyendo esto es por que eres mateo y eres una loca\nEn esta parte voy aponer el sonido del orgasmo",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"Ok, tu ganas...\n\nLa proxima que entres tendras tu recompensa.",Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(getActivity(),"ADIOS",Toast.LENGTH_LONG).show();

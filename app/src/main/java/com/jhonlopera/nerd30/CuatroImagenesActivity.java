@@ -3,11 +3,13 @@ package com.jhonlopera.nerd30;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
@@ -53,6 +55,9 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_cuatro_imagenes);
 
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
@@ -147,7 +152,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                 }
 
 
-                editor_preferencias.putLong("puntaje4imagenes",puntaje).commit();
+                editor_preferencias.putLong("puntaje4imagenes",puntaje).apply();
 
                 score.setText("Score: "+String.valueOf(puntaje));
                 Toast.makeText(this,"GOOD!",Toast.LENGTH_SHORT).show();
@@ -163,8 +168,8 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                 if (level==5){
                     level=1;
                     puntaje=0;
-                    editor_preferencias.putInt("nivel4img",level).commit();
-                    editor_preferencias.putLong("puntaje4imagenes",puntaje).commit();
+                    editor_preferencias.putInt("nivel4img",level).apply();
+                    editor_preferencias.putLong("puntaje4imagenes",puntaje).apply();
                     score.setText("Score: " +puntaje);
 
                 }else{
@@ -177,7 +182,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                 newData.put("nivel4img",String.valueOf(level));
                 myRef.updateChildren(newData);
 
-                editor_preferencias.putInt("nivel4img",level).commit();
+                editor_preferencias.putInt("nivel4img",level).apply();
                 palabra=cargarnivel(level);
                 palabracorrecta="";
                 casillanumero=0;

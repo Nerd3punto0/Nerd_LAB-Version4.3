@@ -3,6 +3,7 @@ package com.jhonlopera.nerd30;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -61,21 +63,17 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         AppEventsLogger.activateApp(LoginActivity.this);
         ecorreo = (EditText) findViewById(R.id.eCorreo);
         econtraseña = (EditText) findViewById(R.id.eContraseña);
 
-
-
-
         // Se define el archivo "Preferencias" donde se almacenaran los valores de las preferencias
         preferencias = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         //se declara instancia el editor de "Preferencias"
         editor_preferencias = preferencias.edit();
-
-
-
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
                 .requestProfile().build();
@@ -99,12 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mBuilder = new AlertDialog.Builder(this);
-        LayoutInflater inflater1 = this.getLayoutInflater();
-        View mView = inflater1.inflate(R.layout.barra_de_carga,null);
-        mBuilder.setView(mView);
-        dialog = mBuilder.create();
-        dialog.show();
+
     }
 
     @Override
@@ -124,8 +117,6 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(GoogleSignInResult result) {
 
         if (result.isSuccess()) {
-
-
 
             GoogleSignInAccount acct = result.getSignInAccount();
             correoR = acct.getEmail();//obtener email
@@ -190,17 +181,17 @@ public class LoginActivity extends AppCompatActivity {
                                         // Se almacena el nombre ya que se puedo haber y los puntajes
                                         nombreR=dataSnapshot.child("user"+String.valueOf(numerito)).child("nombre").getValue().toString();
                                         puntaje4imagenes=Long.parseLong(dataSnapshot.child("user"+String.valueOf(numerito)).child("puntaje4imagenes").getValue().toString());
-                                        editor_preferencias.putLong("puntaje4imagenes",puntaje4imagenes).commit();
+                                        editor_preferencias.putLong("puntaje4imagenes",puntaje4imagenes).apply();
                                         puntajeConcentrese=Long.parseLong(dataSnapshot.child("user"+String.valueOf(numerito)).child("puntajeConcentrese").getValue().toString());
-                                        editor_preferencias.putLong("puntajeConcentrese",puntajeConcentrese).commit();
+                                        editor_preferencias.putLong("puntajeConcentrese",puntajeConcentrese).apply();
                                         puntajeTopo=Long.parseLong(dataSnapshot.child("user"+String.valueOf(numerito)).child("puntajeTopo").getValue().toString());
-                                        editor_preferencias.putLong("puntajeTopo",puntajeTopo).commit();
+                                        editor_preferencias.putLong("puntajeTopo",puntajeTopo).apply();
                                         nivel4img= Integer.parseInt(dataSnapshot.child("user" + String.valueOf(numerito)).child("nivel4img").getValue().toString());
-                                        editor_preferencias.putInt("nivel4img",nivel4img).commit();
+                                        editor_preferencias.putInt("nivel4img",nivel4img).apply();
                                         nivelcon= Integer.parseInt(dataSnapshot.child("user" + String.valueOf(numerito)).child("nivelcon").getValue().toString());
-                                        editor_preferencias.putInt("nivelcon",nivelcon).commit();
+                                        editor_preferencias.putInt("nivelcon",nivelcon).apply();
                                         niveltopo= Integer.parseInt(dataSnapshot.child("user" + String.valueOf(numerito)).child("niveltopo").getValue().toString());
-                                        editor_preferencias.putInt("niveltopo",niveltopo).commit();
+                                        editor_preferencias.putInt("niveltopo",niveltopo).apply();
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
                                         break;
                                     }
@@ -222,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                                         jugador = new Jugador("user" + String.valueOf(contadordeespacios), correoR, nombreR, puntaje4imagenes,puntajeConcentrese,puntajeTopo,
                                                 nivel4img, nivelcon, niveltopo);
                                         myRef.setValue(jugador);
-                                        editor_preferencias.putString("usuario","user"+String.valueOf(contadordeespacios)).commit();//Guardo el id del jugador en preferencias
+                                        editor_preferencias.putString("usuario","user"+String.valueOf(contadordeespacios)).apply();//Guardo el id del jugador en preferencias
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
 
                                     }else{
@@ -232,7 +223,7 @@ public class LoginActivity extends AppCompatActivity {
                                         jugador = new Jugador("user" + id, correoR, nombreR, puntaje4imagenes,puntajeConcentrese,puntajeTopo,
                                                 nivel4img, nivelcon, niveltopo);
                                         myRef.setValue(jugador);
-                                        editor_preferencias.putString("usuario","user"+id).commit();//Guardo el id del jugador en preferencias
+                                        editor_preferencias.putString("usuario","user"+id).apply();//Guardo el id del jugador en preferencias
                                         //Actualizo el numero de usuarios en la base de datos
                                         contador4imagenes++;
                                         contadornivel++;
@@ -244,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
                                 }else{
                                     //Almaceno los datos en preferencias para cargarlos en el peril
                                     guardarPreferencias(silog, correoR, nombreR, foto, log);
-                                    editor_preferencias.putString("usuario","user"+String.valueOf(numerito)).commit();
+                                    editor_preferencias.putString("usuario","user"+String.valueOf(numerito)).apply();
                                     Toast.makeText(getApplicationContext(),"Este usuario ya existe", Toast.LENGTH_SHORT).show();
                                 }
                                 dialog.dismiss();
@@ -265,7 +256,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
 
-
         } else {
             Toast.makeText(getApplicationContext(), "Verifique su conexión", Toast.LENGTH_SHORT).show();
         }
@@ -280,14 +270,19 @@ public class LoginActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        mBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater1 = this.getLayoutInflater();
+        View mView = inflater1.inflate(R.layout.barra_de_carga,null);
+        mBuilder.setView(mView);
+        dialog = mBuilder.create();
+        dialog.show();
     }
 
     void guardarPreferencias(int silog, String correo, String nombre, String foto, String log) {
-        editor_preferencias.putInt("silog", silog);
-        editor_preferencias.putString("correo", correo);
-        editor_preferencias.putString("nombre", nombre);
-        editor_preferencias.putString("foto", foto);
-        editor_preferencias.putString("log", log);
-        editor_preferencias.commit();
+        editor_preferencias.putInt("silog", silog).apply();
+        editor_preferencias.putString("correo", correo).apply();
+        editor_preferencias.putString("nombre", nombre).apply();
+        editor_preferencias.putString("foto", foto).apply();
+        editor_preferencias.putString("log", log).apply();
     }
 }

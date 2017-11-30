@@ -11,13 +11,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class PuntajeActivity extends PrincipalActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -44,7 +40,8 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_puntajes);
-
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        //this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.frameprincipal);
         getLayoutInflater().inflate(R.layout.activity_puntajes, contentFrameLayout);
         getSupportActionBar().setTitle("Puntajes");

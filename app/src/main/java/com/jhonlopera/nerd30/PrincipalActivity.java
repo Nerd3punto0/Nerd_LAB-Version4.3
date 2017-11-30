@@ -3,6 +3,7 @@ package com.jhonlopera.nerd30;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,6 +56,8 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_principal);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,8 +100,8 @@ public class PrincipalActivity extends AppCompatActivity
         myRef = database.getReference("DatosDeUsuario").child(usuario);
         Map<String, Object> newData = new HashMap<>();
         newData.put("puntaje4imagenes", String.valueOf(puntaje4imagenes));
-        newData.put("puntajeconcentrese", String.valueOf(puntajeConcentrese));
-        newData.put("puntajetopo", String.valueOf(puntajeTopo));
+        newData.put("puntajeConcentrese", String.valueOf(puntajeConcentrese));
+        newData.put("puntajeTopo", String.valueOf(puntajeTopo));
         myRef.updateChildren(newData);
 
     }
@@ -361,5 +365,27 @@ public class PrincipalActivity extends AppCompatActivity
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void actualizarpuntajes(long p4imagenes, Long pconcentrese, Long ptopo) {
+        usuario = preferencias.getString("usuario", "No hay usuario");
+        puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
+        puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
+        puntajeTopo=preferencias.getLong("puntajeTopo",0);
+
+        editor_preferencias.putLong("puntaje4imagenes",puntaje4imagenes+p4imagenes).apply();
+        editor_preferencias.putLong("puntajeConcentrese",puntajeConcentrese+pconcentrese).apply();
+        editor_preferencias.putLong("puntajeTopo",puntajeTopo+ptopo).apply();
+
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("DatosDeUsuario").child(usuario);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("puntaje4imagenes", String.valueOf(puntaje4imagenes+p4imagenes));
+        newData.put("puntajeConcentrese", String.valueOf(puntajeConcentrese+pconcentrese));
+        newData.put("puntajeTopo", String.valueOf(puntajeTopo+ptopo));
+        myRef.updateChildren(newData);
+
     }
 }

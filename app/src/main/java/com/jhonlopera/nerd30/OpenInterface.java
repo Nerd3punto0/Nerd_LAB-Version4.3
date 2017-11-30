@@ -17,4 +17,5 @@ public interface OpenInterface {
     void OpenConcentrese();
     void OpenTopo();
     void cerrarSesion();
+    void actualizarpuntajes(long p4imagenes,Long pconcentrese,Long ptopo);
 }
