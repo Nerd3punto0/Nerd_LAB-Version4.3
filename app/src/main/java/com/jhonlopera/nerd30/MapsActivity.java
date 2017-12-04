@@ -1,9 +1,19 @@
 package com.jhonlopera.nerd30;
 
+import android.*;
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.audiofx.BassBoost;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,11 +29,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    LocationManager lm;
-    Location lc;
+    GoogleMap mMap;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    Location location1;
+    MapView mapView;
 
-    double longitude=0, latitude=0;
+    double longitude = 0, latitude = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +46,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        /*lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        lc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Toast.makeText(this, String.valueOf(lc), Toast.LENGTH_SHORT).show();
-        Log.d("LC",String.valueOf(lc));*/
 
     }
 
@@ -52,15 +61,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        Log.d("LATITUDE1", String.valueOf(latitude));
+        Log.d("LONGITUDE1", String.valueOf(longitude));
+
         mMap = googleMap;
-        /*double longitude=0, latitude=0;
-        longitude = lc.getLongitude();
-        latitude = lc.getLatitude();*/
+
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(57, 170);
+        //LatLng sydney = new LatLng(latitude, longitude);
         //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.addMarker(new MarkerOptions().position(sydney));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        //mMap.addMarker(new MarkerOptions().position(sydney));
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
+        Log.d("location",String.valueOf(mMap.getMyLocation()));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }

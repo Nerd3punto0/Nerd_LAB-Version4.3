@@ -161,13 +161,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/img14"
-                android:layout_margin="2dp"/>
+                android:layout_margin="2dp"
+                android:soundEffectsEnabled="true"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/img15"
-                android:layout_margin="2dp"/>
+                android:layout_margin="2dp"
+                android:soundEffectsEnabled="true"/>
             <Button
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

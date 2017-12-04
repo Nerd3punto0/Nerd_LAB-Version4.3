@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 //public class ConcentreseActivity extends AppCompatActivity {
 public class ConcentreseActivity extends PrincipalActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
@@ -96,12 +97,18 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         //se declara instancia el editor de "Preferencias"
         editor_preferencias = preferencias.edit();
 
+        puntaje=preferencias.getLong("puntajeConcentrese",0);
+        tpuntaje.setText(String.valueOf(puntaje));
+
         cargarNivel();
         //Toast.makeText(this, "Se cargó el nivel", Toast.LENGTH_SHORT).show();
     }
 
     private void cargarNivel() {
 
+        Random random = new Random();
+        int aleatorio;
+        aleatorio = random.nextInt(7)+3;
         tiempo.start();
 
         //Obtengo el nivel del juego de preferencias
@@ -113,15 +120,21 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         if(nivelcon==1){
             Toast.makeText(this, "NIVEL 1", Toast.LENGTH_SHORT).show();
             int numTag=0;
-            Collections.shuffle(pictures);
+
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(pictures);
+            }
+
             mostrar.clear();
+
             for(int i=0, j=0; j<6; i+=2, j++){
                 mostrar.add(i,pictures.get(j));
                 mostrar.add(i+1,pictures.get(j));
             }
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
+
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(mostrar);
+            }
 
             for(int i=0;i<42;i++){
                 if((i>12 && i<17)||(i>18 && i<23)||(i>24 && i<29)){
@@ -140,15 +153,21 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         else if(nivelcon==2){
             Toast.makeText(this, "NIVEL 2", Toast.LENGTH_SHORT).show();
             int numTag=0;
-            Collections.shuffle(pictures);
+
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(pictures);
+            }
+
             mostrar.clear();
+
             for(int i=0, j=0; j<10; i+=2, j++){
                 mostrar.add(i,pictures.get(j));
                 mostrar.add(i+1,pictures.get(j));
             }
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
+
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(mostrar);
+            }
 
             for(int i=0;i<42;i++){
                 if((i>6 && i<11)||(i>12 && i<17)||(i>18 && i<23)||(i>24 && i<29)||(i>30 && i<35)){
@@ -167,15 +186,21 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         else if(nivelcon==3){
             Toast.makeText(this, "NIVEL 3", Toast.LENGTH_SHORT).show();
             int numTag=0;
-            Collections.shuffle(pictures);
+
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(pictures);
+            }
+
             mostrar.clear();
+
             for(int i=0, j=0; j<15; i+=2, j++){
                 mostrar.add(i,pictures.get(j));
                 mostrar.add(i+1,pictures.get(j));
             }
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
+
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(mostrar);
+            }
 
             for(int i=0;i<42;i++){
                 if(i>5 && i<36){
@@ -192,37 +217,45 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
 
         //Nivel 4: 7x6
         else if(nivelcon==4 || nivelcon==5) {
-                Log.d("NIVEL",String.valueOf(nivelcon));
-                Toast.makeText(this, "NIVEL 4", Toast.LENGTH_SHORT).show();
-                int numTag = 0;
-                Collections.shuffle(pictures);
-                mostrar.clear();
-                for (int i = 0, j = 0; j < 21; i += 2, j++) {
-                    mostrar.add(i, pictures.get(j));
-                    mostrar.add(i + 1, pictures.get(j));
-                }
-                Collections.shuffle(mostrar);
-                Collections.shuffle(mostrar);
-                Collections.shuffle(mostrar);
+            Toast.makeText(this, "ÚLTIMO NIVEL: NIVEL 4", Toast.LENGTH_SHORT).show();
+            int numTag = 0;
 
-                for (int i = 0; i < 42; i++) {
-                    button[i].setVisibility(View.VISIBLE);
-                    button[i].setBackgroundResource(imagenporDefecto);
-                    button[i].setOnClickListener(this);
-                    button[i].setTag("Button" + numTag);
-                    numTag++;
-                }
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(pictures);
+            }
+
+            mostrar.clear();
+
+            for (int i = 0, j = 0; j < 21; i += 2, j++) {
+                mostrar.add(i, pictures.get(j));
+                mostrar.add(i + 1, pictures.get(j));
+            }
+
+            for(int i=0;i<aleatorio;i++){
+                Collections.shuffle(mostrar);
+            }
+
+            for (int i = 0; i < 42; i++) {
+                button[i].setVisibility(View.VISIBLE);
+                button[i].setBackgroundResource(imagenporDefecto);
+                button[i].setOnClickListener(this);
+                button[i].setTag("Button" + numTag);
+                numTag++;
+            }
 
             if(nivelcon==5){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("ÚLTIMO NIVEL");
-                builder.setMessage("¿Desea volver al nivel 1? \n ¡Esta acción reiniciará el puntaje!");
+                builder.setTitle("YA PASASTE UNA VEZ EL ÚLTIMO NIVEL");
+                builder.setMessage("Desde este momento tu puntaje no se actualizará pero podrás seguir jugando en el nivel 4. " +
+                        "¿Deseas volver al nivel 1? (Al presionar SÍ, se reiniciará el puntaje)");
                 builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         nivelcon=1;
                         editor_preferencias.putInt("nivelCon",nivelcon).commit();
                         puntaje=0;
+                        tpuntaje.setText(String.valueOf(puntaje));
+                        editor_preferencias.putLong("puntajeConcentrese",puntaje).apply();
                         tiempo.setBase(SystemClock.elapsedRealtime());
                         cargarNivel();
                     }
@@ -336,6 +369,7 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                             if(puntaje<0){
                                 puntaje=nivelcon*10;
                             }
+                            editor_preferencias.putLong("puntajeConcentrese",puntaje).apply();
                             tpuntaje.setText(String.valueOf(puntaje));
                             nivelcon++;
                         }
@@ -343,7 +377,7 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                         incorrectas=0;
                         tiempo.setBase(SystemClock.elapsedRealtime());
                         editor_preferencias.putInt("nivelCon",nivelcon).commit();
-                        nivelcon=preferencias.getInt("nivelCon",nivelcon);
+                        //nivelcon=preferencias.getInt("nivelCon",nivelcon);
                         cargarNivel();
                     }
                 }
