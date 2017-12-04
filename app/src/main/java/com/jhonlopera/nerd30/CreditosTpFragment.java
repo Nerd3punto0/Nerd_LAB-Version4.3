@@ -104,10 +104,7 @@ public class CreditosTpFragment extends Fragment {
             tName.setText(jugadorTopo.getName());
             TextView  puntajetp=(TextView) view1.findViewById(R.id.tvpuntajejugador);
             puntajetp.setText("Puntaje: "+String.valueOf(jugadorTopo.getPuntaje()));
-
             return view1;
-
-
         }
     }
     private static class PuntajeJuego {
