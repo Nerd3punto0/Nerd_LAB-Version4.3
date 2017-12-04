@@ -40,7 +40,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
     FirebaseDatabase database;
     private MediaPlayer player,aplastado;
     TextView score;
-    int estadomusica;
+    private int estadomusica;
     int velocidad;
 
 
@@ -223,9 +223,12 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
     }
     @Override
     protected void onRestart() {
-        player = MediaPlayer.create(this, R.raw.sonido1);
-        player.setLooping(true);
-        player.start();
+
+        if (estadomusica==1){
+            player = MediaPlayer.create(this, R.raw.sonido1);
+            player.setLooping(true);
+            player.start();
+        }
         super.onRestart();
     }
 }

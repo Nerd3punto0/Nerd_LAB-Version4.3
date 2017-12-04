@@ -27,15 +27,24 @@ import java.util.Map;
 
 public class CuatroImagenesActivity extends AppCompatActivity implements   View.OnClickListener {
 
-    ImageView im1,im2,im3,im4;
+    private ImageView im[]=new ImageView[4];
     Button bavanzar,bdel;
-    LinearLayout Linear1,Linear2,Linear3,Linear4,Linear5,Linear6,Linear7;
+    LinearLayout layoutletra[]=new LinearLayout[7];
+    private int idletras[]={R.id.tletra1,R.id.tletra2,R.id.tletra3,R.id.tletra4,R.id.tletra5,R.id.tletra6,R.id.tletra7};
+    private int idimagenes[]={R.id.im1,R.id.im2,R.id.im3,R.id.im4};
+    private int idbotones[]={R.id.b1,R.id.b2,R.id.b3,R.id.b4,R.id.b5,R.id.b6,R.id.b7,R.id.b8,R.id.b9,R.id.b10};
+    private int idlayouts[]={R.id.linear1,R.id.linear2,R.id.linear3,R.id.linear4,R.id.linear5,R.id.linear6,R.id.linear7};
     Chronometer tiempo;
+    private int idimagennivel[]={R.drawable.nivel1_1,R.drawable.nivel1_2,R.drawable.nivel1_2,R.drawable.nivel1_4,
+                                 R.drawable.nivel2_1,R.drawable.nivel2_2,R.drawable.nivel2_3,R.drawable.nivel2_4,
+                                 R.drawable.nivel3_1,R.drawable.nivel3_2,R.drawable.nivel3_3,R.drawable.nivel3_4,
+                                 R.drawable.nivel4_1,R.drawable.nivel4_2,R.drawable.nivel4_3,R.drawable.nivel4_3,
+                                 R.drawable.nivel5_1,R.drawable.nivel5_2,R.drawable.nivel5_3,R.drawable.nivel5_3};
+    private String lista_palabras[]={"ROJO","TIRO","PRESA","TRAMPA","EMOCION"};
     SharedPreferences preferencias;
     SharedPreferences.Editor editor_preferencias;
     DatabaseReference myRef;
     FirebaseDatabase database;
-    String nivel;
     int level;
     int casillanumero=0;
     final Button botones[]=new Button[10];
@@ -47,31 +56,21 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
     long puntaje=0;
     long puntajeaux=0;
     long p;
-    String usuario, contador;
-
-
+    String usuario;
+    int estadomusica;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        //this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_cuatro_imagenes);
         getSupportActionBar().setTitle("Aplasta al Topo");
 
-
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
-        player = MediaPlayer.create(this, R.raw.sonido1);
-        player.setLooping(true);
-        player.start();
-
-
-        tiempo=(Chronometer) findViewById(R.id.tiempo);
-        score=(TextView) findViewById(R.id.tscore);
-
+        estadomusica=preferencias.getInt("estadosonido",1);
         puntaje=preferencias.getLong("puntaje4imagenes",0);
         usuario=preferencias.getString("usuario","No hay usuario");
         level=preferencias.getInt("nivel4img",1);
@@ -81,39 +80,39 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
         newData.put("puntaje4imagenes", puntaje);
         newData.put("nivel4img",level);
         myRef.updateChildren(newData);
-        //puntaje=0;
-        score.setText("Score: "+ String.valueOf(puntaje));
 
-        //Casillas de las letras
-        letras[0]=(TextView) findViewById(R.id.tletra1);
-        letras[1]=(TextView) findViewById(R.id.tletra2);
-        letras[2]=(TextView) findViewById(R.id.tletra3);
-        letras[3]=(TextView) findViewById(R.id.tletra4);
-        letras[4]=(TextView) findViewById(R.id.tletra5);
-        letras[5]=(TextView) findViewById(R.id.tletra6);
-        letras[6]=(TextView) findViewById(R.id.tletra7);
+        for (int cont=0;cont<letras.length;cont++){
+            //Casillas de las letras
+            letras[cont]=(TextView) findViewById(idletras[cont]);
+        }
+        for (int cont=0;cont<im.length;cont++){
+            //imagenes
+            im[cont]=(ImageView) findViewById(idimagenes[cont]);
+        }
+        //botones
+        for (int cont=0;cont<botones.length;cont++){
+            botones[cont]=(Button) findViewById(idbotones[cont]);
+        }
 
-        //Imágenes
-        im1=(ImageView) findViewById(R.id.im1);
-        im2=(ImageView) findViewById(R.id.im2);
-        im3=(ImageView) findViewById(R.id.im3);
-        im4=(ImageView) findViewById(R.id.im4);
-
-        botones[0]=(Button) findViewById(R.id.b1);
-        botones[1]=(Button) findViewById(R.id.b2);
-        botones[2]=(Button) findViewById(R.id.b3);
-        botones[3]=(Button) findViewById(R.id.b4);
-        botones[4]=(Button) findViewById(R.id.b5);
-        botones[5]=(Button) findViewById(R.id.b6);
-        botones[6]=(Button) findViewById(R.id.b7);
-        botones[7]=(Button) findViewById(R.id.b8);
-        botones[8]=(Button) findViewById(R.id.b9);
-        botones[9]=(Button) findViewById(R.id.b10);
+        for (int cont=0;cont<layoutletra.length;cont++){
+            layoutletra[cont]=(LinearLayout) findViewById(idlayouts[cont]);
+        }
         bavanzar=(Button) findViewById(R.id.bavanzar);
         bdel=(Button) findViewById(R.id.bdel);
 
-        palabra=cargarnivel(level);
+        //Musica
+        player = MediaPlayer.create(this, R.raw.sonido1);
+        if (estadomusica==1){
+            player.setLooping(true);
+            player.start();
+        }
 
+        tiempo=(Chronometer) findViewById(R.id.tiempo);//Tiempo
+
+        //puntaje
+        score=(TextView) findViewById(R.id.tscore);
+        score.setText("Puntaje: "+ String.valueOf(puntaje));
+        palabra=cargarnivel(level);
         tiempo.start();
 
         bavanzar.setOnClickListener(this);
@@ -127,16 +126,13 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
 
     @Override
     public void onClick(View v) {
-        //preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         if(v==bavanzar){
             for (int i=0;i<palabra.length();i++){
                 palabracorrecta+=letras[i].getText();
             }
             if(palabracorrecta.equals(palabra)){
-
                 puntajeaux=SystemClock.elapsedRealtime()-tiempo.getBase();
                 puntajeaux=(puntajeaux/1000);
-
                 if (puntajeaux<10){
                     puntaje+=100*level;
                 }
@@ -153,9 +149,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                     puntaje+=p;
                 }
 
-
                 editor_preferencias.putLong("puntaje4imagenes",puntaje).apply();
-
                 score.setText("Score: "+String.valueOf(puntaje));
                 Toast.makeText(this,"GOOD!",Toast.LENGTH_SHORT).show();
 
@@ -172,12 +166,11 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                     puntaje=0;
                     editor_preferencias.putInt("nivel4img",level).apply();
                     editor_preferencias.putLong("puntaje4imagenes",puntaje).apply();
-                    score.setText("Score: " +puntaje);
+                    score.setText("Puntaje: " + String.valueOf(puntaje));
 
                 }else{
                     level++;
                 }
-                //database = FirebaseDatabase.getInstance();
                 myRef = database.getReference("DatosDeUsuario").child(usuario);
                 Map<String, Object> newData = new HashMap<>();
                 newData.put("puntaje4imagenes", puntaje);
@@ -222,97 +215,20 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
     private String cargarnivel(int level) {
 
         String palabra="";
-        switch(level){
-            case 1:
-                palabra="ROJO";
-                cambiarletras(palabra);
-                Linear5=(LinearLayout) findViewById(R.id.linear5);
-                Linear5.setVisibility(View.GONE);
-                Linear6=(LinearLayout) findViewById(R.id.linear6);
-                Linear6.setVisibility(View.GONE);
-                Linear7=(LinearLayout) findViewById(R.id.linear7);
-                Linear7.setVisibility(View.GONE);
-                im1.setImageDrawable(getResources().getDrawable(R.drawable.nivel1_1));
-                im2.setImageDrawable(getResources().getDrawable(R.drawable.nivel1_2));
-                im3.setImageDrawable(getResources().getDrawable(R.drawable.nivel1_3));
-                im4.setImageDrawable(getResources().getDrawable(R.drawable.nivel1_4));
+        palabra=lista_palabras[level-1];
+        cambiarletras(palabra);
 
-                break;
-            case 2:
-
-                int aux[]=new int[10];
-                palabra="TIRO";
-
-                cambiarletras(palabra);
-                Linear5=(LinearLayout) findViewById(R.id.linear5);
-                Linear5.setVisibility(View.GONE);
-                Linear6=(LinearLayout) findViewById(R.id.linear6);
-                Linear6.setVisibility(View.GONE);
-                Linear7=(LinearLayout) findViewById(R.id.linear7);
-                Linear7.setVisibility(View.GONE);
-
-                im1.setImageDrawable(getResources().getDrawable(R.drawable.nivel2_1));
-                im2.setImageDrawable(getResources().getDrawable(R.drawable.nivel2_2));
-                im3.setImageDrawable(getResources().getDrawable(R.drawable.nivel2_3));
-                im4.setImageDrawable(getResources().getDrawable(R.drawable.nivel2_4));
-                break;
-            case 3:
-                palabra="PRESA";
-
-                cambiarletras(palabra);
-                Linear5=(LinearLayout) findViewById(R.id.linear5);
-                Linear5.setVisibility(View.VISIBLE);
-                Linear6=(LinearLayout) findViewById(R.id.linear6);
-                Linear6.setVisibility(View.GONE);
-                Linear7=(LinearLayout) findViewById(R.id.linear7);
-                Linear7.setVisibility(View.GONE);
-
-
-                Linear5=(LinearLayout) findViewById(R.id.linear5);
-                Linear5.setVisibility(View.VISIBLE);
-
-                im1.setImageDrawable(getResources().getDrawable(R.drawable.nivel3_1));
-                im2.setImageDrawable(getResources().getDrawable(R.drawable.nivel3_2));
-                im3.setImageDrawable(getResources().getDrawable(R.drawable.nivel3_3));
-                im4.setImageDrawable(getResources().getDrawable(R.drawable.nivel3_4));
-                break;
-            case 4:
-                palabra="TRAMPA";
-
-                cambiarletras(palabra);
-                Linear5=(LinearLayout) findViewById(R.id.linear5);
-                Linear5.setVisibility(View.VISIBLE);
-                Linear6=(LinearLayout) findViewById(R.id.linear6);
-                Linear6.setVisibility(View.VISIBLE);
-                Linear7=(LinearLayout) findViewById(R.id.linear7);
-                Linear7.setVisibility(View.GONE);
-
-
-                im1.setImageDrawable(getResources().getDrawable(R.drawable.nivel4_1));
-                im2.setImageDrawable(getResources().getDrawable(R.drawable.nivel4_2));
-                im3.setImageDrawable(getResources().getDrawable(R.drawable.nivel4_3));
-                im4.setImageDrawable(getResources().getDrawable(R.drawable.nivel4_4));
-                break;
-
-            case 5:
-                palabra="EMOCION";
-
-                cambiarletras(palabra);
-                Linear5=(LinearLayout) findViewById(R.id.linear5);
-                Linear5.setVisibility(View.VISIBLE);
-                Linear6=(LinearLayout) findViewById(R.id.linear6);
-                Linear6.setVisibility(View.VISIBLE);
-                Linear7=(LinearLayout) findViewById(R.id.linear7);
-                Linear7.setVisibility(View.VISIBLE);
-                im1.setImageDrawable(getResources().getDrawable(R.drawable.nivel5_1));
-                im2.setImageDrawable(getResources().getDrawable(R.drawable.nivel5_2));
-                im3.setImageDrawable(getResources().getDrawable(R.drawable.nivel5_3));
-                im4.setImageDrawable(getResources().getDrawable(R.drawable.nivel5_4));
-                break;
+        for (int cont=0;cont<layoutletra.length;cont++){
+            layoutletra[cont].setVisibility(View.GONE);
         }
-
+        for (int cont=0;cont<palabra.length();cont++){
+            layoutletra[cont].setVisibility(View.VISIBLE);
+        }
+        int i=0;
+        for (int cont=(level-1)*4;cont<level*4;cont++,i++){
+            im[i].setImageDrawable(getResources().getDrawable(idimagennivel[cont]));
+        }
         return palabra;
-
     }
 
     private void cambiarletras(String palabra) {
@@ -368,9 +284,11 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
 
     @Override
     protected void onRestart() {
-        player = MediaPlayer.create(this, R.raw.sonido1);
-        player.setLooping(true);
-        player.start();
+        if (estadomusica==1){
+            player = MediaPlayer.create(this, R.raw.sonido1);
+            player.setLooping(true);
+            player.start();
+        }
         super.onRestart();
     }
 
