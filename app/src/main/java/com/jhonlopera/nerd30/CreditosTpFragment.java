@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,14 +28,9 @@ public class CreditosTpFragment extends Fragment {
 
     DatabaseReference myRef;
     FirebaseDatabase database;
-    String usuario, contador;
-    int valorfinal;
-    String jugadores [] = {"No hay jugador","No hay jugador","No hay jugador","No hay jugador","No hay jugador"};
-    String puntajecon [] = {"0","0","0","0","0"};
-    TextView tjugador1, tjugador2, tjugador3, tjugador4, tjugador5;
     private ArrayList <PuntajeJuego> puntajesTopo,ptaux;
     private ListView lista;
-    Adapter adapter;
+
 
     public CreditosTpFragment() {
 
@@ -56,12 +50,12 @@ public class CreditosTpFragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         myRef=FirebaseDatabase.getInstance().getReference();
 
-        myRef.child("DatosDeUsuario").orderByChild("puntajeTopo").addValueEventListener(new ValueEventListener() {
+        myRef.child("DatosDeUsuario").orderByChild("puntajeTopo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 Iterator<DataSnapshot> items=dataSnapshot.getChildren().iterator();
-                Toast.makeText(getActivity(),"Numero de usuarios "+String.valueOf(dataSnapshot.getChildrenCount()), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(),"Numero de usuarios "+String.valueOf(dataSnapshot.getChildrenCount()), Toast.LENGTH_SHORT).show();
                 ptaux.clear();
                 puntajesTopo.clear();
                 int cont=1;
