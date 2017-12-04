@@ -31,6 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         //se declara instancia el editor de "Preferencias"
         editor_preferencias=preferencias.edit();
 
+
         final int silog=preferencias.getInt("silog",0);
         if (silog==0){
             TimerTask task =new TimerTask() {
