@@ -24,7 +24,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="Instruccionescon">El objetivo de este juego es encontrar una palabra que relacione las 4 imágenes que se muestran.  ¡Pero no será tan sencillo! Tu única pista será el número de letras que tenga la palabra.\n</string>
+    <string name="Instruccionescon">\nLa idea aqui es bastante simple; Encuentra las parejas de cada imagen y gana puntos.\n¿Estas listo?\n</string>
     <string name="Instruccionesapla">Aplasta al topo es un juego de velocidad de reacción. La idea es simple, aplasta el topo cuando salga del agujero.  ¡Pero ten cuidado!, cada vez será más rápido.\n</string>
     <string name="Instrucciones4im">El objetivo de este juego es encontrar una palabra que relacione las 4 imágenes que se muestran. ¡Pero no es tan sencillo! Tu única pista es el número de letras que tenga la palabra.\n</string>
     <string name="cuatroIM">4 imágenes 1 palabra</string>
@@ -39,5 +39,6 @@
     <string name="textobienvenida">Para comenzar a jugar es necesario iniciar sesion con tu cuenta de google.(Asegurate de tener coneccion)</string>
     <string name="Espere">Por favor espere</string>
     <string name="title_activity_maps">Mapa</string>
+    <string name="opcionesdesonido">Opciones de sonido</string>
 
 </resources>

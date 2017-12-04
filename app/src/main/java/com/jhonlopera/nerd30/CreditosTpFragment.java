@@ -1,11 +1,16 @@
 package com.jhonlopera.nerd30;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +19,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class CreditosTpFragment extends Fragment {
@@ -26,6 +34,9 @@ public class CreditosTpFragment extends Fragment {
     String jugadores [] = {"No hay jugador","No hay jugador","No hay jugador","No hay jugador","No hay jugador"};
     String puntajecon [] = {"0","0","0","0","0"};
     TextView tjugador1, tjugador2, tjugador3, tjugador4, tjugador5;
+    private ArrayList <PuntajeJuego> puntajesTopo,ptaux;
+    private ListView lista;
+    Adapter adapter;
 
     public CreditosTpFragment() {
 
@@ -34,56 +45,43 @@ public class CreditosTpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_creditos_ct, container, false);
-        tjugador1 = (TextView) view.findViewById(R.id.tjugador1);
-        tjugador2 = (TextView) view.findViewById(R.id.tjugador2);
-        tjugador3 = (TextView) view.findViewById(R.id.tjugador3);
-        tjugador4 = (TextView) view.findViewById(R.id.tjugador4);
-        tjugador5 = (TextView) view.findViewById(R.id.tjugador5);
+        View view= inflater.inflate(R.layout.fragment_creditos_tp, container, false);
+
+        ptaux=new ArrayList<PuntajeJuego>();
+        puntajesTopo=new ArrayList<PuntajeJuego>();
+        lista=(ListView) view.findViewById(R.id.puntajeTopo);
+        final  Adapter adapter=new Adapter(getActivity(),puntajesTopo);
+        lista.setAdapter(adapter);
 
         database = FirebaseDatabase.getInstance();
-        Bundle bundle=getArguments();
-        if(bundle!=null){
-            usuario=bundle.getString("usuario");
-        }
+        myRef=FirebaseDatabase.getInstance().getReference();
 
-        myRef = database.getReference("Contadores");
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.child("DatosDeUsuario").orderByChild("puntajeTopo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                contador=dataSnapshot.child("contador").getValue().toString();
 
-                if(Integer.valueOf(contador)<=0){
-                    Toast.makeText(getActivity(),"No hay usuarios",Toast.LENGTH_LONG).show();
-                }else{
-                    if(Integer.valueOf(contador)>5)
-                        valorfinal=5;
-                    else
-                        valorfinal=Integer.valueOf(contador);
-
-                    myRef = database.getReference("DatosDeUsuario");
-                    myRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for(int i=0; i<valorfinal; i++) {
-                                jugadores[i] = dataSnapshot.child("user" + String.valueOf(i)).child("nombre").getValue().toString();
-                                puntajecon[i] = dataSnapshot.child("user" + String.valueOf(i)).child("puntajeConcentrese").getValue().toString();
-                            }
-
-                            tjugador1.setText("1. " + jugadores[0] + "  " + String.valueOf(puntajecon[0]));
-                            tjugador2.setText("2. " + jugadores[1] + "  " + String.valueOf(puntajecon[1]));
-                            tjugador3.setText("3. " + jugadores[2] + "  " + String.valueOf(puntajecon[2]));
-                            tjugador4.setText("4. " + jugadores[3] + "  " + String.valueOf(puntajecon[3]));
-                            tjugador5.setText("5. " + jugadores[4] + "  " + String.valueOf(puntajecon[4]));
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
+                Iterator<DataSnapshot> items=dataSnapshot.getChildren().iterator();
+                Toast.makeText(getActivity(),"Numero de usuarios "+String.valueOf(dataSnapshot.getChildrenCount()), Toast.LENGTH_SHORT).show();
+                ptaux.clear();
+                puntajesTopo.clear();
+                int cont=1;
+                while (items.hasNext()){
+                    DataSnapshot item=items.next();
+                    String nombre,puntaje;
+                    nombre=item.child("nombre").getValue().toString();
+                    puntaje=item.child("puntajeTopo").getValue().toString();
+                    if(!nombre.equals(" ")){
+                        PuntajeJuego entrada=new PuntajeJuego(nombre,puntaje,String.valueOf(cont));
+                        cont++;
+                        ptaux.add(entrada);
+                        //puntajesTopo.add(entrada);
+                    }
                 }
+                for (int i=ptaux.size()-1;i>=0;i--){
+                    ptaux.get(i).setId(String.valueOf(ptaux.size()-i));
+                    puntajesTopo.add(ptaux.get(i));
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -92,7 +90,70 @@ public class CreditosTpFragment extends Fragment {
             }
         });
 
-
         return view;
+    }
+
+    class Adapter extends ArrayAdapter<PuntajeJuego> {
+
+        public Adapter(@NonNull Context context, ArrayList<PuntajeJuego> puntajesTopo) {
+            super(context, R.layout.puntaje_list,puntajesTopo);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
+            LayoutInflater inflater= LayoutInflater.from(getContext());
+            View view1=inflater.inflate(R.layout.puntaje_list,null);
+
+            PuntajeJuego jugadorTopo=getItem(position);
+
+            TextView  pocision=(TextView) view1.findViewById(R.id.tvposicion);
+            pocision.setText(jugadorTopo.getId());
+            TextView  tName=(TextView) view1.findViewById(R.id.tvnombrejugador);
+            tName.setText(jugadorTopo.getName());
+            TextView  puntajetp=(TextView) view1.findViewById(R.id.tvpuntajejugador);
+            puntajetp.setText(String.valueOf(jugadorTopo.getPuntaje()));
+
+            return view1;
+
+
+        }
+    }
+    private static class PuntajeJuego {
+        public String name, puntaje,id;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getPuntaje() {
+            return puntaje;
+
+        }
+
+        public void setPuntaje(String puntaje) {
+            this.puntaje = puntaje;
+        }
+
+        public PuntajeJuego(String name, String puntaje,String id) {
+            this.name = name;
+
+            this.puntaje = puntaje;
+
+            this.id=id;
+        }
     }
 }

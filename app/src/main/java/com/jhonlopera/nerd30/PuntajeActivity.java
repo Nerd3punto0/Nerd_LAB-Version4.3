@@ -46,6 +46,7 @@ public class PuntajeActivity extends PrincipalActivity implements NavigationView
         getLayoutInflater().inflate(R.layout.activity_puntajes, contentFrameLayout);
         getSupportActionBar().setTitle("Puntajes");
 
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);

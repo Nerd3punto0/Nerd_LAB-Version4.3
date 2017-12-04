@@ -44,16 +44,15 @@
             android:name=".PrincipalActivity"
             android:label="@string/title_activity_principal"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".CuatroImagenesActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".SustoActivity"
             android:label="Te lo adverti"
             android:theme="@style/Theme.AppCompat.Dialog" />
         <activity
             android:name=".ConcentreseActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -68,11 +67,21 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps">
+
+        </activity>
 
         <activity
             android:name=".TopoActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".PrincipalActivity">
+        </activity>
+
+        <activity
+            android:name=".CuatroImagenesActivity"
+           android:parentActivityName=".PrincipalActivity"
+            android:theme="@style/AppTheme">
+
+        </activity>
     </application>
 
 </manifest>

@@ -52,6 +52,7 @@ public class PrincipalActivity extends AppCompatActivity
     SharedPreferences.Editor editor_preferencias;
     int silog;
     Fragment fragment1 ;
+    private int estadosonido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +66,7 @@ public class PrincipalActivity extends AppCompatActivity
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
 
-
         //Para cerrar cesion con google
-        // ________________________________________________________________________________________________
         paralogincongoogle();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -90,18 +89,18 @@ public class PrincipalActivity extends AppCompatActivity
         getSupportActionBar().setTitle("Menu principal");
         ft.add(R.id.frameprincipal, fragment1).commit();
 
-
         usuario = preferencias.getString("usuario", "No hay usuario");
         puntaje4imagenes = preferencias.getLong("puntaje4imagenes",0);
         puntajeConcentrese=preferencias.getLong("puntajeConcentrese",0);
         puntajeTopo=preferencias.getLong("puntajeTopo",0);
 
+
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("DatosDeUsuario").child(usuario);
         Map<String, Object> newData = new HashMap<>();
-        newData.put("puntaje4imagenes", String.valueOf(puntaje4imagenes));
-        newData.put("puntajeConcentrese", String.valueOf(puntajeConcentrese));
-        newData.put("puntajeTopo", String.valueOf(puntajeTopo));
+        newData.put("puntaje4imagenes", puntaje4imagenes);
+        newData.put("puntajeConcentrese", puntajeConcentrese);
+        newData.put("puntajeTopo", puntajeTopo);
         myRef.updateChildren(newData);
 
     }
@@ -158,10 +157,11 @@ public class PrincipalActivity extends AppCompatActivity
             }
             int contadorbroma=preferencias.getInt("contadorbroma",1);
             ft = fm.beginTransaction();
-            Bundle args=new Bundle();
+
             fragment = new PerfilFragment();
-            args.putString("nombre",nombreR);
+            Bundle args=new Bundle();
             args.putString("correo",correoR);
+            args.putString("nombre",nombreR);
             args.putString("foto",foto);
             args.putInt("contadorbroma",contadorbroma);
             fragment.setArguments(args);
@@ -186,7 +186,16 @@ public class PrincipalActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_config) {
 
+            estadosonido=preferencias.getInt("estadosonido",1);
             fragment=new ConfiguracionFragment();
+            Bundle args=new Bundle();
+            args.putString("nombre",nombreR);
+            args.putString("foto",foto);
+            args.putInt("estadosonido",estadosonido);
+            fragment.setArguments(args);
+            ft.addToBackStack("nombre");
+            ft.addToBackStack("estadosonido");
+            ft.addToBackStack("foto");
             FragmentTransaction =true;
 
 
@@ -355,11 +364,10 @@ public class PrincipalActivity extends AppCompatActivity
 
     @Override
     public void OpenTopo() {
-
         Intent intent=new Intent(this,TopoActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -387,10 +395,15 @@ public class PrincipalActivity extends AppCompatActivity
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("DatosDeUsuario").child(usuario);
         Map<String, Object> newData = new HashMap<>();
-        newData.put("puntaje4imagenes", String.valueOf(puntaje4imagenes+p4imagenes));
-        newData.put("puntajeConcentrese", String.valueOf(puntajeConcentrese+pconcentrese));
-        newData.put("puntajeTopo", String.valueOf(puntajeTopo+ptopo));
+        newData.put("puntaje4imagenes", puntaje4imagenes+p4imagenes);
+        newData.put("puntajeConcentrese", puntajeConcentrese+pconcentrese);
+        newData.put("puntajeTopo", puntajeTopo+ptopo);
         myRef.updateChildren(newData);
+    }
+
+    @Override
+    public void estadomusica(int musicstate) {
+        editor_preferencias.putInt("estadosonido",musicstate).apply();
     }
 
 

@@ -18,4 +18,5 @@ public interface OpenInterface {
     void OpenTopo();
     void cerrarSesion();
     void actualizarpuntajes(long p4imagenes,long pconcentrese,long ptopo);
+    void estadomusica(int musicstate);
 }

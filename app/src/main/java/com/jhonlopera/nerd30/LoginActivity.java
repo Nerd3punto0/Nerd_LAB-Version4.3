@@ -219,8 +219,16 @@ public class LoginActivity extends AppCompatActivity {
                                         jugador = new Jugador("user" + String.valueOf(contadordeespacios), correoR, nombreR, puntaje4imagenes,puntajeConcentrese,puntajeTopo,
                                                 nivel4img, nivelcon, niveltopo);
                                         myRef.setValue(jugador);
+
                                         editor_preferencias.putString("usuario","user"+String.valueOf(contadordeespacios)).apply();//Guardo el id del jugador en preferencias
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
+
+                                        editor_preferencias.putLong("puntaje4imagenes",puntaje4imagenes).apply();
+                                        editor_preferencias.putLong("puntajeConcentrese",puntajeConcentrese).apply();
+                                        editor_preferencias.putLong("puntajeTopo",puntajeTopo).apply();
+                                        editor_preferencias.putInt("nivel4img",nivel4img).apply();
+                                        editor_preferencias.putInt("nivelcon",nivelcon).apply();
+                                        editor_preferencias.putInt("niveltopo",niveltopo).apply();
 
                                     }else{
                                         //Añadir un un usuario en una nueva posicion
@@ -236,6 +244,12 @@ public class LoginActivity extends AppCompatActivity {
                                         myRef = database.getReference("Contadores").child("contador");
                                         myRef.setValue(contadornivel);
                                         guardarPreferencias(silog, correoR, nombreR, foto, log);
+                                        editor_preferencias.putLong("puntaje4imagenes",puntaje4imagenes).apply();
+                                        editor_preferencias.putLong("puntajeConcentrese",puntajeConcentrese).apply();
+                                        editor_preferencias.putLong("puntajeTopo",puntajeTopo).apply();
+                                        editor_preferencias.putInt("nivel4img",nivel4img).apply();
+                                        editor_preferencias.putInt("nivelcon",nivelcon).apply();
+                                        editor_preferencias.putInt("niveltopo",niveltopo).apply();
                                     }
 
                                 }else{

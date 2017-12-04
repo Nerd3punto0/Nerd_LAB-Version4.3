@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
@@ -55,10 +54,13 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        //this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_cuatro_imagenes);
+        getSupportActionBar().setTitle("Aplasta al Topo");
+
 
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
@@ -76,8 +78,8 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("DatosDeUsuario").child(usuario);
         Map<String, Object> newData = new HashMap<>();
-        newData.put("puntaje4imagenes", String.valueOf(puntaje));
-        newData.put("nivel4img",String.valueOf(level));
+        newData.put("puntaje4imagenes", puntaje);
+        newData.put("nivel4img",level);
         myRef.updateChildren(newData);
         //puntaje=0;
         score.setText("Score: "+ String.valueOf(puntaje));
@@ -178,8 +180,8 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                 //database = FirebaseDatabase.getInstance();
                 myRef = database.getReference("DatosDeUsuario").child(usuario);
                 Map<String, Object> newData = new HashMap<>();
-                newData.put("puntaje4imagenes", String.valueOf(puntaje));
-                newData.put("nivel4img",String.valueOf(level));
+                newData.put("puntaje4imagenes", puntaje);
+                newData.put("nivel4img",level);
                 myRef.updateChildren(newData);
 
                 editor_preferencias.putInt("nivel4img",level).apply();
@@ -352,5 +354,31 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        player.pause();
+        super.onPause();
+    }
 
+    @Override
+    protected void onStop() {
+        player.stop();
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        player = MediaPlayer.create(this, R.raw.sonido1);
+        player.setLooping(true);
+        player.start();
+        super.onRestart();
+    }
+
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
+    }
 }

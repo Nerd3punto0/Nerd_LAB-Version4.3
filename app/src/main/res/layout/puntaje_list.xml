@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" 
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_margin="10dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:text="1"
+        android:gravity="center"
+        android:textSize="35sp"
+        android:textColor="@color/black"
+        android:id="@+id/tvposicion"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="3">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jhon Anderson Lopera Cortes"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textColor="@color/black"
+            android:id="@+id/tvnombrejugador" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="123456"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/tvpuntajejugador"/>
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>

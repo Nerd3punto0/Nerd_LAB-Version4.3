@@ -11,7 +11,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -139,6 +141,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
         }
         else if(counter==15){
             Toast.makeText(getActivity(),"Ok, tu ganas...\n\nLa proxima que entres tendras tu recompensa.",Toast.LENGTH_SHORT).show();
+            openInterface.actualizarpuntajes(300,300,300);
         }
         else{
             Toast.makeText(getActivity(),"ADIOS",Toast.LENGTH_LONG).show();
