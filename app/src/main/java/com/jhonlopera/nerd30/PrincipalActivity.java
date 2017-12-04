@@ -365,7 +365,7 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public void OpenTopo() {
         Intent intent=new Intent(this,TopoActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         //finish();
     }

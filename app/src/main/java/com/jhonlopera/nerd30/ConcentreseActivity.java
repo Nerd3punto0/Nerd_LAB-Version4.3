@@ -1,17 +1,21 @@
 package com.jhonlopera.nerd30;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -31,13 +35,14 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
     SharedPreferences preferencias;
     SharedPreferences.Editor editor_preferencias;
     int nivelcon;
-    long puntaje;
+    long puntaje, tiempotranscurrido;
     Button button[] = new Button[42];
     boolean isButtonClicked[]= new boolean[42];
-    int presionados=0, img1=0, img2=0, pos1=0, pos2=0, auxid=0, numeroBotones=0, correctas=0;
+    int presionados=0, img1=0, img2=0, pos1=0, pos2=0, auxid=0, numeroBotones=0, correctas=0, incorrectas=0;
     int imagenporDefecto=0;
     Button auxbutton=null;
     View auxv;
+    Chronometer tiempo;
 
     int buttonsId[]={R.id.img1,R.id.img2,R.id.img3,R.id.img4,R.id.img5,R.id.img6,
             R.id.img7,R.id.img8,R.id.img9,R.id.img10,R.id.img11,R.id.img12,
@@ -74,12 +79,12 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
 
         imagenporDefecto=R.drawable.concentrese_question;
 
-        tpuntaje=(TextView) findViewById(R.id.tpuntaje);
-        tpuntaje.setText("Puntaje: "+String.valueOf(puntaje));
 
         //Enlazo widgets con variables tipo botón------
+        tpuntaje=(TextView) findViewById(R.id.tpuntos);
+        tiempo=(Chronometer) findViewById(R.id.tiempoConcentrese);
+        tpuntaje.setText(String.valueOf(puntaje));
         //fondocon =(LinearLayout) findViewById(R.id.fondoconcentrese);
-
         for(int i=0;i<42;i++){
             button[i] = (Button) findViewById(buttonsId[i]);
             button[i].setSoundEffectsEnabled(true);
@@ -96,6 +101,9 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
     }
 
     private void cargarNivel() {
+
+        tiempo.start();
+
         //Obtengo el nivel del juego de preferencias
         nivelcon=preferencias.getInt("nivelCon",1);
         //Log.d("nivelconCargar",String.valueOf(nivelcon));
@@ -183,25 +191,51 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         }
 
         //Nivel 4: 7x6
-        else if(nivelcon==4 || nivelcon==5){
-            Toast.makeText(this, "NIVEL 4", Toast.LENGTH_SHORT).show();
-            int numTag=0;
-            Collections.shuffle(pictures);
-            mostrar.clear();
-            for(int i=0, j=0; j<21; i+=2, j++){
-                mostrar.add(i,pictures.get(j));
-                mostrar.add(i+1,pictures.get(j));
-            }
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
-            Collections.shuffle(mostrar);
+        else if(nivelcon==4 || nivelcon==5) {
+                Log.d("NIVEL",String.valueOf(nivelcon));
+                Toast.makeText(this, "NIVEL 4", Toast.LENGTH_SHORT).show();
+                int numTag = 0;
+                Collections.shuffle(pictures);
+                mostrar.clear();
+                for (int i = 0, j = 0; j < 21; i += 2, j++) {
+                    mostrar.add(i, pictures.get(j));
+                    mostrar.add(i + 1, pictures.get(j));
+                }
+                Collections.shuffle(mostrar);
+                Collections.shuffle(mostrar);
+                Collections.shuffle(mostrar);
 
-            for(int i=0;i<42;i++){
-                button[i].setVisibility(View.VISIBLE);
-                button[i].setBackgroundResource(imagenporDefecto);
-                button[i].setOnClickListener(this);
-                button[i].setTag("Button"+numTag);
-                numTag++;
+                for (int i = 0; i < 42; i++) {
+                    button[i].setVisibility(View.VISIBLE);
+                    button[i].setBackgroundResource(imagenporDefecto);
+                    button[i].setOnClickListener(this);
+                    button[i].setTag("Button" + numTag);
+                    numTag++;
+                }
+
+            if(nivelcon==5){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("ÚLTIMO NIVEL");
+                builder.setMessage("¿Desea volver al nivel 1? \n ¡Esta acción reiniciará el puntaje!");
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        nivelcon=1;
+                        editor_preferencias.putInt("nivelCon",nivelcon).commit();
+                        puntaje=0;
+                        tiempo.setBase(SystemClock.elapsedRealtime());
+                        cargarNivel();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        tiempo.setBase(SystemClock.elapsedRealtime());
+                    }
+                });
+                AlertDialog dialog= builder.create();
+                dialog.setCancelable(false);
+                dialog.show();
             }
         }
     }
@@ -285,6 +319,7 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                     else{
                         auxbutton.setBackgroundResource(imagenporDefecto);
                         auxv.setBackgroundResource(imagenporDefecto);
+                        incorrectas++;
                     }
                     isButtonClicked[pos1]=false;
                     isButtonClicked[pos2]=false;
@@ -295,10 +330,18 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                     }
 
                     if(correctas==(numeroBotones/2)){
-                        correctas=0;
+                        tiempotranscurrido=(SystemClock.elapsedRealtime()-tiempo.getBase())/1000;
                         if(nivelcon<5){
+                            puntaje=puntaje+((correctas*50)-tiempotranscurrido-incorrectas)*nivelcon;
+                            if(puntaje<0){
+                                puntaje=nivelcon*10;
+                            }
+                            tpuntaje.setText(String.valueOf(puntaje));
                             nivelcon++;
                         }
+                        correctas=0;
+                        incorrectas=0;
+                        tiempo.setBase(SystemClock.elapsedRealtime());
                         editor_preferencias.putInt("nivelCon",nivelcon).commit();
                         nivelcon=preferencias.getInt("nivelCon",nivelcon);
                         cargarNivel();
