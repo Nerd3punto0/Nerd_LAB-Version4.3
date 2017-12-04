@@ -38,8 +38,8 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
     private int idimagennivel[]={R.drawable.nivel1_1,R.drawable.nivel1_2,R.drawable.nivel1_2,R.drawable.nivel1_4,
                                  R.drawable.nivel2_1,R.drawable.nivel2_2,R.drawable.nivel2_3,R.drawable.nivel2_4,
                                  R.drawable.nivel3_1,R.drawable.nivel3_2,R.drawable.nivel3_3,R.drawable.nivel3_4,
-                                 R.drawable.nivel4_1,R.drawable.nivel4_2,R.drawable.nivel4_3,R.drawable.nivel4_3,
-                                 R.drawable.nivel5_1,R.drawable.nivel5_2,R.drawable.nivel5_3,R.drawable.nivel5_3};
+                                 R.drawable.nivel4_1,R.drawable.nivel4_2,R.drawable.nivel4_3,R.drawable.nivel4_4,
+                                 R.drawable.nivel5_1,R.drawable.nivel5_2,R.drawable.nivel5_3,R.drawable.nivel5_4};
     private String lista_palabras[]={"ROJO","TIRO","PRESA","TRAMPA","EMOCION"};
     SharedPreferences preferencias;
     SharedPreferences.Editor editor_preferencias;
