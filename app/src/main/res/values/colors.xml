@@ -143,6 +143,7 @@
 	<item name="snow" type="color">#fffafa</item>
 	<item name="ivory" type="color">#fffff0</item>
 	<item name="white" type="color">#ffffff</item>
+	<item name="rata" type="color">#ec2225</item>
     
 	
 	<integer-array name="EditColors">

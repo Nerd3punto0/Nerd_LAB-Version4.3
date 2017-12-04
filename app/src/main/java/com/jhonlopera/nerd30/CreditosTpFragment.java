@@ -25,12 +25,10 @@ import java.util.Iterator;
 
 public class CreditosTpFragment extends Fragment {
 
-
     DatabaseReference myRef;
     FirebaseDatabase database;
     private ArrayList <PuntajeJuego> puntajesTopo,ptaux;
     private ListView lista;
-
 
     public CreditosTpFragment() {
 
@@ -55,7 +53,6 @@ public class CreditosTpFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 Iterator<DataSnapshot> items=dataSnapshot.getChildren().iterator();
-                //Toast.makeText(getActivity(),"Numero de usuarios "+String.valueOf(dataSnapshot.getChildrenCount()), Toast.LENGTH_SHORT).show();
                 ptaux.clear();
                 puntajesTopo.clear();
                 int cont=1;
@@ -68,7 +65,6 @@ public class CreditosTpFragment extends Fragment {
                         PuntajeJuego entrada=new PuntajeJuego(nombre,puntaje,String.valueOf(cont));
                         cont++;
                         ptaux.add(entrada);
-                        //puntajesTopo.add(entrada);
                     }
                 }
                 for (int i=ptaux.size()-1;i>=0;i--){
@@ -107,7 +103,7 @@ public class CreditosTpFragment extends Fragment {
             TextView  tName=(TextView) view1.findViewById(R.id.tvnombrejugador);
             tName.setText(jugadorTopo.getName());
             TextView  puntajetp=(TextView) view1.findViewById(R.id.tvpuntajejugador);
-            puntajetp.setText(String.valueOf(jugadorTopo.getPuntaje()));
+            puntajetp.setText("Puntaje: "+String.valueOf(jugadorTopo.getPuntaje()));
 
             return view1;
 

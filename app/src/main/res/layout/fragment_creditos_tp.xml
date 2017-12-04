@@ -2,9 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.jhonlopera.nerd30.CreditosTpFragment">
+    tools:context="com.jhonlopera.nerd30.CreditosTpFragment"
+    android:background="@drawable/fondo1234">
 
     <ListView
+        android:layout_marginTop="15dp"
         android:id="@+id/puntajeTopo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
