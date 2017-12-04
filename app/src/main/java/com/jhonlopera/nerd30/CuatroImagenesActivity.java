@@ -374,8 +374,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
         super.onRestart();
     }
 
-
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

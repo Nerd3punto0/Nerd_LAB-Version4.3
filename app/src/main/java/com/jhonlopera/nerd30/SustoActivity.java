@@ -16,9 +16,7 @@ public class SustoActivity extends AppCompatActivity {
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_susto);
         player = MediaPlayer.create(this, R.raw.grito);
-        //player.setLooping(true);
         player.start();
-
     }
 
     @Override
@@ -31,5 +29,11 @@ public class SustoActivity extends AppCompatActivity {
     protected void onPause() {
         player.stop();
         super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        player.stop();
+        super.onStop();
     }
 }
