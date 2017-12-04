@@ -31,6 +31,7 @@ public class MenuTopoFragment extends Fragment implements View.OnClickListener {
         jugar.setOnClickListener(this);
         return view;
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

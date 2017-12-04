@@ -45,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:textSize="25sp"
                 android:textColor="@color/white"
-                android:id="@+id/tiempo"/>
+                android:id="@+id/tiempoConcentrese"/>
         </LinearLayout>
     </LinearLayout>
 
