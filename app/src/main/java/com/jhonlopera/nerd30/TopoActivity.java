@@ -184,7 +184,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
             editor_preferencias.putLong("puntajeTopo",puntaje).apply();
             Map<String, Object> newData = new HashMap<>();
             newData.put("puntajeTopo", String.valueOf(puntaje));
-            newData.put("niveltopo",String.valueOf(level));
+            newData.put("niveltopo",level);
             myRef.updateChildren(newData);
             score.setText("Score: "+ String.valueOf(puntaje));
 

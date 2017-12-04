@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.ImageView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,6 +17,8 @@ public class SplashActivity extends AppCompatActivity {
     private static final long SPlASH_DELAY=2000;
     SharedPreferences preferencias;
     SharedPreferences.Editor editor_preferencias;
+    ImageView imagenplash;
+    AnimationDrawable animacionsplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 
+
         setContentView(R.layout.activity_splash);
 
         // Se define el archivo "Preferencias" donde se almacenaran los valores de las preferencias
@@ -31,6 +36,11 @@ public class SplashActivity extends AppCompatActivity {
         //se declara instancia el editor de "Preferencias"
         editor_preferencias=preferencias.edit();
 
+        imagenplash=(ImageView) findViewById(R.id.imagenplash);
+        imagenplash.setBackgroundResource(R.drawable.animacionsplash);
+        animacionsplash=(AnimationDrawable) imagenplash.getBackground();
+        animacionsplash.setOneShot(false);
+        animacionsplash.start();
 
         final int silog=preferencias.getInt("silog",0);
         if (silog==0){

@@ -24,12 +24,10 @@ import java.util.Iterator;
 
 
 public class CreditosTpFragment extends Fragment {
-
     DatabaseReference myRef;
     FirebaseDatabase database;
     private ArrayList <PuntajeJuego> puntajesTopo,ptaux;
     private ListView lista;
-
     public CreditosTpFragment() {
 
     }
@@ -38,13 +36,11 @@ public class CreditosTpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_creditos_tp, container, false);
-
         ptaux=new ArrayList<PuntajeJuego>();
         puntajesTopo=new ArrayList<PuntajeJuego>();
         lista=(ListView) view.findViewById(R.id.puntajeTopo);
         final  Adapter adapter=new Adapter(getActivity(),puntajesTopo);
         lista.setAdapter(adapter);
-
         database = FirebaseDatabase.getInstance();
         myRef=FirebaseDatabase.getInstance().getReference();
 
@@ -95,9 +91,7 @@ public class CreditosTpFragment extends Fragment {
 
             LayoutInflater inflater= LayoutInflater.from(getContext());
             View view1=inflater.inflate(R.layout.puntaje_list,null);
-
             PuntajeJuego jugadorTopo=getItem(position);
-
             TextView  pocision=(TextView) view1.findViewById(R.id.tvposicion);
             pocision.setText(jugadorTopo.getId());
             TextView  tName=(TextView) view1.findViewById(R.id.tvnombrejugador);
@@ -105,42 +99,7 @@ public class CreditosTpFragment extends Fragment {
             TextView  puntajetp=(TextView) view1.findViewById(R.id.tvpuntajejugador);
             puntajetp.setText("Puntaje: "+String.valueOf(jugadorTopo.getPuntaje()));
             return view1;
-        }
-    }
-    private static class PuntajeJuego {
-        public String name, puntaje,id;
 
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getPuntaje() {
-            return puntaje;
-
-        }
-
-        public void setPuntaje(String puntaje) {
-            this.puntaje = puntaje;
-        }
-
-        public PuntajeJuego(String name, String puntaje,String id) {
-            this.name = name;
-
-            this.puntaje = puntaje;
-
-            this.id=id;
         }
     }
 }
