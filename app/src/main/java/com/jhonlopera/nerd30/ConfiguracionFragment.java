@@ -125,8 +125,11 @@ public class ConfiguracionFragment extends Fragment implements View.OnClickListe
         }
         if(v==confirmar){
 
-            if (TextUtils.isEmpty((nuevonombre.getText().toString()))) {
+            if (TextUtils.isEmpty((nuevonombre.getText().toString())) ) {
                 nuevonombre.setError("Ingrese nuevo nombre");
+            }
+            else if( nuevonombre.getText().toString().equals(" ")){
+                nuevonombre.setError("El nombre no puede estar vacio");
             }
             else{
                 linearcambiarnombre.setVisibility(View.VISIBLE);

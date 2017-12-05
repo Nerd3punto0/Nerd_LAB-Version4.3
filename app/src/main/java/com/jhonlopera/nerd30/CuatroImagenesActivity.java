@@ -110,7 +110,6 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
         }
 
         tiempo=(Chronometer) findViewById(R.id.tiempo);//Tiempo
-
         //puntaje
         score=(TextView) findViewById(R.id.tscore);
         score.setText("Puntaje: "+ String.valueOf(puntaje));
