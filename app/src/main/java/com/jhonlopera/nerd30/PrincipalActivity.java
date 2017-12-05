@@ -178,13 +178,14 @@ public class PrincipalActivity extends AppCompatActivity
 
             intent = new Intent(this, PuntajeActivity.class);
             startActivity(intent);
+        }
+       //  else if (id == R.id.nav_mapa){
 
-        } else if (id == R.id.nav_mapa){
+         //   intent = new Intent(this, MapsActivity.class);
+           // startActivity(intent);
 
-            intent = new Intent(this, MapsActivity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.nav_config) {
+        //}
+        else if (id == R.id.nav_config) {
 
             estadosonido=preferencias.getInt("estadosonido",1);
             fragment=new ConfiguracionFragment();

@@ -2,33 +2,37 @@ package com.jhonlopera.nerd30;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
+import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 //public class ConcentreseActivity extends AppCompatActivity {
-public class ConcentreseActivity extends PrincipalActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
+public class ConcentreseActivity extends AppCompatActivity implements  View.OnClickListener{
 
 /**/    FragmentManager fm;
     FragmentTransaction ft;
@@ -44,6 +48,11 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
     Button auxbutton=null;
     View auxv;
     Chronometer tiempo;
+    private int estadomusica;
+    private MediaPlayer player;
+    private String usuario;
+    DatabaseReference myRef;
+    FirebaseDatabase database;
 
     int buttonsId[]={R.id.img1,R.id.img2,R.id.img3,R.id.img4,R.id.img5,R.id.img6,
             R.id.img7,R.id.img8,R.id.img9,R.id.img10,R.id.img11,R.id.img12,
@@ -69,17 +78,14 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_concentrese);
-
-        //Toast.makeText(this, "onCreateJuego", Toast.LENGTH_SHORT).show();
-        fm=getSupportFragmentManager();
-        ft=fm.beginTransaction();
-        FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.frameprincipal);
-        getLayoutInflater().inflate(R.layout.activity_concentrese, contentFrameLayout);
-        ft.remove(fragment1).commit(); //se remueve el fragment que se inicia por defecto en el oncreate de principal
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_concentrese);
         getSupportActionBar().setTitle("Concentrese");
 
-        imagenporDefecto=R.drawable.concentrese_question;
 
+        imagenporDefecto=R.drawable.concentrese_question;
 
         //Enlazo widgets con variables tipo botón------
         tpuntaje=(TextView) findViewById(R.id.tpuntos);
@@ -92,13 +98,27 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         }
         //----------------------------------
 
-        // Se define el archivo "Preferencias" donde se almacenaran los valores de las preferencias
-        preferencias = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        //se declara instancia el editor de "Preferencias"
-        editor_preferencias = preferencias.edit();
+        preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+        editor_preferencias=preferencias.edit();
 
         puntaje=preferencias.getLong("puntajeConcentrese",0);
         tpuntaje.setText(String.valueOf(puntaje));
+        estadomusica=preferencias.getInt("estadosonido",1);
+        player = MediaPlayer.create(this, R.raw.sonido1);
+        usuario=preferencias.getString("usuario","No hay usuario");
+        nivelcon=preferencias.getInt("nivelcon",1);
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("DatosDeUsuario").child(usuario);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("puntajeConcentrese", puntaje);
+        newData.put("nivelcon",nivelcon);
+        myRef.updateChildren(newData);
+
+        if (estadomusica==1){
+            player.setLooping(true);
+            player.start();
+        }
 
         cargarNivel();
         //Toast.makeText(this, "Se cargó el nivel", Toast.LENGTH_SHORT).show();
@@ -112,7 +132,7 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
         tiempo.start();
 
         //Obtengo el nivel del juego de preferencias
-        nivelcon=preferencias.getInt("nivelCon",1);
+        nivelcon=preferencias.getInt("nivelcon",1);
         //Log.d("nivelconCargar",String.valueOf(nivelcon));
 
         //Inicia la interfaz del juego según el nivel
@@ -252,11 +272,16 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         nivelcon=1;
-                        editor_preferencias.putInt("nivelCon",nivelcon).commit();
+                        editor_preferencias.putInt("nivelcon",nivelcon).commit();
                         puntaje=0;
                         tpuntaje.setText(String.valueOf(puntaje));
                         editor_preferencias.putLong("puntajeConcentrese",puntaje).apply();
                         tiempo.setBase(SystemClock.elapsedRealtime());
+                        myRef = database.getReference("DatosDeUsuario").child(usuario);
+                        Map<String, Object> newData = new HashMap<>();
+                        newData.put("puntajeConcentrese", puntaje);
+                        newData.put("nivelcon",nivelcon);
+                        myRef.updateChildren(newData);
                         cargarNivel();
                     }
                 });
@@ -376,13 +401,54 @@ public class ConcentreseActivity extends PrincipalActivity implements Navigation
                         correctas=0;
                         incorrectas=0;
                         tiempo.setBase(SystemClock.elapsedRealtime());
-                        editor_preferencias.putInt("nivelCon",nivelcon).commit();
-                        //nivelcon=preferencias.getInt("nivelCon",nivelcon);
+                        editor_preferencias.putInt("nivelcon",nivelcon).apply();
+                        //nivelcon=preferencias.getInt("nivelcon",nivelcon);
+                        myRef = database.getReference("DatosDeUsuario").child(usuario);
+                        Map<String, Object> newData = new HashMap<>();
+                        newData.put("puntajeConcentrese", puntaje);
+                        newData.put("nivelcon",nivelcon);
+                        myRef.updateChildren(newData);
                         cargarNivel();
                     }
                 }
             };
             countDownTimer.start();
         }
+    }
+
+    public void onBackPressed(){
+        player.stop();
+        Intent intent=new Intent(this,PrincipalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onPause() {
+        player.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        player.stop();
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        if (estadomusica==1){
+            player = MediaPlayer.create(this, R.raw.sonido1);
+            player.setLooping(true);
+            player.start();
+        }
+        super.onRestart();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
     }
 }

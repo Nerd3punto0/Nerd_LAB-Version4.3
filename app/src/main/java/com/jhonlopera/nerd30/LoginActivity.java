@@ -34,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class LoginActivity extends AppCompatActivity {
-    private String correoR, contraseñaR, correo, contraseña, nombreR, foto, log, prueba,id;
+    private String correoR, nombreR, foto, log, prueba,id;
     int numerousuario;
     int numerito;
     private Uri urifoto;

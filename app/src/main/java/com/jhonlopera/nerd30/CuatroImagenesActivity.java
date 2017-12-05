@@ -1,6 +1,8 @@
 package com.jhonlopera.nerd30;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -66,7 +68,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_cuatro_imagenes);
-        getSupportActionBar().setTitle("Aplasta al Topo");
+        getSupportActionBar().setTitle("4 imágenes 1 plabra");
 
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
@@ -112,8 +114,44 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
         //puntaje
         score=(TextView) findViewById(R.id.tscore);
         score.setText("Puntaje: "+ String.valueOf(puntaje));
-        palabra=cargarnivel(level);
-        tiempo.start();
+        if (level<=5) {
+            palabra = cargarnivel(level);
+            tiempo.start();
+        }else{
+            palabra = cargarnivel(level-1);
+            final Intent intent=new Intent(this,CuatroImagenesActivity.class);
+            final Intent intent2=new Intent(this,PrincipalActivity.class);
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);
+
+            builder.setTitle("¡Felicitaciones!");
+            builder.setMessage("Lamentablemente esto es una aplicacion de prueba así que contamos pocos niveles... por ahora." +
+                    "\n\n¿Deseas reiniciar el juego y mejorar tu puntaje?");
+
+            builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    level=1;
+                    puntaje=0;
+                    editor_preferencias.putInt("nivel4img",level).apply();
+                    editor_preferencias.putLong("puntaje4imagenes",puntaje).apply();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent2);
+                    finish();
+                }
+            });
+            AlertDialog dialog= builder.create();
+            dialog.setCancelable(false);
+            dialog.show();
+        }
 
         bavanzar.setOnClickListener(this);
         bdel.setOnClickListener(this);
@@ -162,8 +200,41 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                 }
 
                 if (level==5){
-                    level=1;
-                    puntaje=0;
+                    level++;
+                    final Intent intent=new Intent(this,CuatroImagenesActivity.class);
+                    final Intent intent2=new Intent(this,PrincipalActivity.class);
+                    AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                    builder.setTitle("¡Felicitaciones!");
+                    builder.setMessage("Lamentablemente esto es una aplicacion de prueba así que contamos pocos niveles... por ahora." +
+                                        "\n\n¿Deseas reiniciar el juego y meejorar tu puntaje?");
+                    builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            level=1;
+                            puntaje=0;
+                            editor_preferencias.putInt("nivel4img",level).apply();
+                            editor_preferencias.putLong("puntaje4imagenes",puntaje).apply();
+
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                            finish();
+
+                        }
+                    });
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent2);
+                            finish();
+                           // level=6;
+
+
+                        }
+                    });
+                    AlertDialog dialog= builder.create();
+                    dialog.setCancelable(false);
+                    dialog.show();
                     editor_preferencias.putInt("nivel4img",level).apply();
                     editor_preferencias.putLong("puntaje4imagenes",puntaje).apply();
                     score.setText("Puntaje: " + String.valueOf(puntaje));
@@ -178,7 +249,8 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
                 myRef.updateChildren(newData);
 
                 editor_preferencias.putInt("nivel4img",level).apply();
-                palabra=cargarnivel(level);
+                if(level<=5){
+                    palabra=cargarnivel(level);}
                 palabracorrecta="";
                 casillanumero=0;
                 tiempo.setBase(SystemClock.elapsedRealtime());
@@ -266,6 +338,7 @@ public class CuatroImagenesActivity extends AppCompatActivity implements   View.
     public void onBackPressed(){
         player.stop();
         Intent intent=new Intent(this,PrincipalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }

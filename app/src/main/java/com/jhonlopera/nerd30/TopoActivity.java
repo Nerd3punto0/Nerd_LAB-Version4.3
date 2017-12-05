@@ -206,6 +206,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
     public void onBackPressed(){
         player.stop();
         Intent intent=new Intent(this,PrincipalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
