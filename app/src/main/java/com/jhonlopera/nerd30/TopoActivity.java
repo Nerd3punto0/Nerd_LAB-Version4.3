@@ -29,6 +29,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
     boolean sianimar=true;
     int numero;
     ImageView Topos[]=new ImageView[9];
+    ImageView Icorazon[]=new ImageView[3];
     int id[]={R.id.topo1,R.id.topo2,R.id.topo3,R.id.topo4,R.id.topo5,R.id.topo6,R.id.topo7,R.id.topo8,R.id.topo9};
     int level;
     AnimationDrawable animacionTopo[]=new AnimationDrawable[9];
@@ -41,7 +42,8 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
     private MediaPlayer player,aplastado;
     TextView score;
     private int estadomusica;
-    int velocidad;
+    private int velocidad,contadorgolpe;
+    private boolean golpe;
 
 
     @Override
@@ -55,22 +57,22 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setTitle("Aplasta al Topo");
         contador=0;
         velocidad=1500;
+        contadorgolpe=0;
+        golpe=false;
 
+        Icorazon[0]=(ImageView) findViewById(R.id.corazon3);
+        Icorazon[1]=(ImageView) findViewById(R.id.corazon2);
+        Icorazon[2]=(ImageView) findViewById(R.id.corazon1);
         //Se cargan los datos necesarios desde preferencias
         preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
         editor_preferencias=preferencias.edit();
         estadomusica=preferencias.getInt("estadosonido",1);
-        puntaje=preferencias.getLong("puntajeTopo",0);
+        puntaje=0;
         usuario=preferencias.getString("usuario","No hay usuario");
         level=preferencias.getInt("niveltopo",1);
 
         //Se sincroniza Fire base y las preferencias
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("DatosDeUsuario").child(usuario);
-        Map<String, Object> newData = new HashMap<>();
-        newData.put("puntajeTopo", puntaje);
-        newData.put("niveltopo",level);
-        myRef.updateChildren(newData);
+
 
         // se asignan las animaciones a cada imageview
         for(int i=0;i<id.length;i++){
@@ -130,6 +132,7 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
             animacionTopo[numero].start();
             contador = (SystemClock.elapsedRealtime() - tiempo.getBase()) / 1000;
 
+
         }
         loop();
     }
@@ -155,10 +158,66 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
             }
             @Override
             public void onFinish() {
-                animar();
+
+                if(golpe==false){
+                    if(contadorgolpe<3) {
+                        Icorazon[contadorgolpe].setVisibility(View.GONE);
+                        contadorgolpe++;
+                    }
+                }
+                if(contadorgolpe<3){
+                    animar();
+                    golpe=false;
+                }
+                else{
+                    mensaje();
+                }
+
             }
         };
         countDownTimer.start();
+    }
+
+    private void mensaje() {
+
+        player.stop();
+        final Intent intent=new Intent(TopoActivity.this,TopoActivity.class);
+        final Intent intent2=new Intent(TopoActivity.this,PrincipalActivity.class);
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("JAJAJAJA LOOOSEEEER");
+        builder.setMessage("¿Deseas reinciar el juego y mejorar tu puntaje?\n");
+        builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //puntaje=0;
+                //editor_preferencias.putLong("puntajeTopo",puntaje).apply();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Long puntajeaux=preferencias.getLong("puntajeTopo",0);
+                if(puntaje>puntajeaux){
+                editor_preferencias.putLong("puntajeTopo",puntaje).apply();
+                database = FirebaseDatabase.getInstance();
+                myRef = database.getReference("DatosDeUsuario").child(usuario);
+                Map<String, Object> newData = new HashMap<>();
+                newData.put("puntajeTopo", puntaje);
+                myRef.updateChildren(newData);
+                }
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
+                finish();
+
+            }
+        });
+        AlertDialog dialog= builder.create();
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     @Override
@@ -173,19 +232,17 @@ public class TopoActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
         }
-        if(aux1-contador<=950 && numeroaux==numeroaux2){
+        if(aux1-contador<=920 && numeroaux==numeroaux2){
             animacionTopo[numeroaux].stop();
             if(estadomusica==1){
                 aplastado.start();
             }
+            golpe=true;
+
             final int numerito=numeroaux;
             Topos[numeroaux].setBackgroundResource(R.drawable.golpe);
             puntaje+=5;
-            editor_preferencias.putLong("puntajeTopo",puntaje).apply();
-            Map<String, Object> newData = new HashMap<>();
-            newData.put("puntajeTopo", String.valueOf(puntaje));
-            newData.put("niveltopo",level);
-            myRef.updateChildren(newData);
+            //editor_preferencias.putLong("puntajeTopo",puntaje).apply();
             score.setText("Score: "+ String.valueOf(puntaje));
 
 

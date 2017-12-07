@@ -9,47 +9,83 @@
     android:weightSum="5">
 
     <LinearLayout
-        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="5dp"
         android:layout_weight="0.3"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tscoreTopo"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/Score"
-                android:textSize="25sp"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:id="@+id/tscoreTopo"/>
+                android:textSize="23sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:gravity="end">
+            android:layout_weight="1.7"
+            android:gravity="end"
+            android:orientation="horizontal">
+
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textSize="25sp"
+                android:layout_weight="1.3"
+                android:text="@string/Tiempo"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:text="@string/Tiempo"/>
+                android:textSize="23sp"
+                android:textStyle="bold" />
+
             <Chronometer
-                android:layout_width="wrap_content"
+                android:id="@+id/tiempoTopo"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textSize="25sp"
-                android:id="@+id/tiempoTopo"/>
+                android:layout_weight=".8"
+                android:textSize="23sp"
+                android:gravity="start"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/corazon"
+                    android:id="@+id/corazon1"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.31"
+                    android:background="@drawable/corazon"
+                    android:id="@+id/corazon2"/>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:background="@drawable/corazon"
+                    android:id="@+id/corazon3"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

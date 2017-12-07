@@ -1,27 +1,16 @@
 package com.jhonlopera.nerd30;
 
-import android.*;
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.media.audiofx.BassBoost;
-import android.os.Build;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -29,24 +18,35 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    GoogleMap mMap;
-    LocationManager locationManager;
-    LocationListener locationListener;
-    Location location1;
-    MapView mapView;
-
+    private GoogleMap mMap;
+    SharedPreferences preferencias;
     double longitude = 0, latitude = 0;
+    double lat1, lat2, lat3, lat4, long1, long2, long3, long4, cte=0.0009999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        preferencias=getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+        latitude=Double.parseDouble(preferencias.getString("latitude","0"));
+        longitude=Double.parseDouble(preferencias.getString("longitude","0"));
+
+        lat1=latitude-cte;
+        long1=longitude-cte;
+
+        lat2=latitude+cte;
+        long2=longitude-cte;
+
+        lat3=latitude-cte;
+        long3=longitude+cte;
+
+        lat4=latitude+cte;
+        long4=longitude+cte;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
     }
 
 
@@ -61,17 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        Log.d("LATITUDE1", String.valueOf(latitude));
-        Log.d("LONGITUDE1", String.valueOf(longitude));
-
         mMap = googleMap;
-
-
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(latitude, longitude);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.addMarker(new MarkerOptions().position(sydney));
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -85,7 +75,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.setMyLocationEnabled(true);
 
-        Log.d("location",String.valueOf(mMap.getMyLocation()));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // Add a marker in Sydney and move the camera
+        //LatLng sydney = new LatLng(-34, 151);
+
+        LatLng position = new LatLng(latitude,longitude);
+        mMap.addMarker(new MarkerOptions().position(position).title("¡Acá estás!"));
+
+        LatLng pos1 = new LatLng(lat1,long1);
+        mMap.addMarker(new MarkerOptions().position(pos1).title("¡Sabemos donde estás!"));
+
+        LatLng pos2 = new LatLng(lat2,long2);
+        mMap.addMarker(new MarkerOptions().position(pos2).title("¡Iremos por ti!"));
+
+        LatLng pos3 = new LatLng(lat3,long3);
+        mMap.addMarker(new MarkerOptions().position(pos3).title("¡Ni se te ocurra escapar!"));
+
+        LatLng pos4 = new LatLng(lat4,long4);
+        mMap.addMarker(new MarkerOptions().position(pos4).title("¡Déjenmelo a mi!"));
+
+        //mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        //mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+        //mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        //mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position,17));
+
+        Toast.makeText(this, "¡Te tenemos rodeado!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "¡Sabemos todo de ti!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "¡Aprenderás a no meterte con nosotros!", Toast.LENGTH_LONG).show();
+
     }
 }

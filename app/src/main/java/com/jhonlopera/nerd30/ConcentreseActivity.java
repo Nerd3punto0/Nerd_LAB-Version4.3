@@ -49,7 +49,7 @@ public class ConcentreseActivity extends AppCompatActivity implements  View.OnCl
     View auxv;
     Chronometer tiempo;
     private int estadomusica;
-    private MediaPlayer player;
+    private MediaPlayer musica,efecto;
     private String usuario;
     DatabaseReference myRef;
     FirebaseDatabase database;
@@ -104,7 +104,10 @@ public class ConcentreseActivity extends AppCompatActivity implements  View.OnCl
         puntaje=preferencias.getLong("puntajeConcentrese",0);
         tpuntaje.setText(String.valueOf(puntaje));
         estadomusica=preferencias.getInt("estadosonido",1);
-        player = MediaPlayer.create(this, R.raw.sonido1);
+        musica= MediaPlayer.create(this, R.raw.juegoconcentresecut);
+        efecto=MediaPlayer.create(this,R.raw.sonidopaginac);
+        musica.setVolume(1,20);
+        efecto.setVolume(1,30);
         usuario=preferencias.getString("usuario","No hay usuario");
         nivelcon=preferencias.getInt("nivelcon",1);
 
@@ -116,8 +119,8 @@ public class ConcentreseActivity extends AppCompatActivity implements  View.OnCl
         myRef.updateChildren(newData);
 
         if (estadomusica==1){
-            player.setLooping(true);
-            player.start();
+            musica.setLooping(true);
+            musica.start();
         }
 
         cargarNivel();
@@ -370,9 +373,13 @@ public class ConcentreseActivity extends AppCompatActivity implements  View.OnCl
                 public void onFinish() {
                     //Toast.makeText(ConcentreseActivity.this, "acá también", Toast.LENGTH_SHORT).show();
                     if(img2==img1){
+                        if (estadomusica==1){
+                            efecto.start();
+                        }
                         auxbutton.setVisibility(View.INVISIBLE);
                         auxv.setVisibility(View.INVISIBLE);
                         correctas++;
+
                     }
                     else{
                         auxbutton.setBackgroundResource(imagenporDefecto);
@@ -417,7 +424,7 @@ public class ConcentreseActivity extends AppCompatActivity implements  View.OnCl
     }
 
     public void onBackPressed(){
-        player.stop();
+        musica.stop();
         Intent intent=new Intent(this,PrincipalActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -426,22 +433,22 @@ public class ConcentreseActivity extends AppCompatActivity implements  View.OnCl
 
     @Override
     protected void onPause() {
-        player.pause();
+        musica.pause();
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        player.stop();
+        musica.stop();
         super.onStop();
     }
 
     @Override
     protected void onRestart() {
         if (estadomusica==1){
-            player = MediaPlayer.create(this, R.raw.sonido1);
-            player.setLooping(true);
-            player.start();
+            musica = MediaPlayer.create(this, R.raw.sonido1);
+            musica.setLooping(true);
+            musica.start();
         }
         super.onRestart();
     }

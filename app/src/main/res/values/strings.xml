@@ -38,7 +38,7 @@
     <string name="cambiarnombreperfil">Cambiar nombre perfil</string>
     <string name="textobienvenida">Para comenzar a jugar es necesario iniciar sesion con tu cuenta de google.(Asegurate de tener coneccion)</string>
     <string name="Espere">Por favor espere</string>
-    <string name="title_activity_maps">Mapa</string>
     <string name="opcionesdesonido">Opciones de sonido</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

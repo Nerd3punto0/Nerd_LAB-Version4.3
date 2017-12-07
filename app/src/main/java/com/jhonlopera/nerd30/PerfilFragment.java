@@ -117,7 +117,7 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(),"Seguro tu madre no te quiere... ",Toast.LENGTH_SHORT).show();
         }
         else if(counter==11){
-            Toast.makeText(getActivity(),"Ok, fuera de aquí...",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"ADIOS",Toast.LENGTH_LONG).show();
             TimerTask task =new TimerTask() {
                 @Override
                 public void run() {
@@ -129,18 +129,25 @@ public class PerfilFragment extends Fragment implements View.OnClickListener {
 
         }
         else if(counter==12){
+            openInterface.obtenerUbicacion();
+            Toast.makeText(getActivity(),"Creo saber donde estas...",Toast.LENGTH_SHORT).show();
+            /*Intent intent = new Intent(getActivity(),LocationActivity.class);
+            startActivity(intent);*/
+        }
+
+        else if(counter==13){
             Toast.makeText(getActivity(),"Te lo advierto, comienzo a cansarme",Toast.LENGTH_SHORT).show();
         }
-        else if(counter==13){
+        else if(counter==14){
             Intent intent=new Intent(getActivity(),SustoActivity.class);
             startActivity(intent);
 
         }
-        else if(counter==14){
+        else if(counter==15){
             Toast.makeText(getActivity(),"¿Qué debo hacer para que te canses?",Toast.LENGTH_SHORT).show();
         }
-        else if(counter==15){
-            Toast.makeText(getActivity(),"Ok, tu ganas...\n\nLa proxima que entres tendras tu recompensa.",Toast.LENGTH_SHORT).show();
+        else if(counter==16){
+            Toast.makeText(getActivity(),"Ok, tu ganas...",Toast.LENGTH_SHORT).show();
             openInterface.actualizarpuntajes(300,300,300);
         }
         else{

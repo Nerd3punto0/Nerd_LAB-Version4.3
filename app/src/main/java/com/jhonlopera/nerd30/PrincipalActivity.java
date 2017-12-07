@@ -4,9 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -53,6 +60,10 @@ public class PrincipalActivity extends AppCompatActivity
     int silog;
     Fragment fragment1 ;
     private int estadosonido;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    double latitude=0, longitude=0;
+    boolean bandera=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +114,102 @@ public class PrincipalActivity extends AppCompatActivity
         newData.put("puntajeTopo", puntajeTopo);
         myRef.updateChildren(newData);
 
+        bandera=preferencias.getBoolean("bandera",false);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                editor_preferencias.putBoolean("bandera",bandera).apply();
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+                if(latitude!=0 && longitude!=0) {
+                    editor_preferencias.putString("latitude", String.valueOf(latitude)).apply();
+                    editor_preferencias.putString("longitude", String.valueOf(longitude)).apply();
+                    /*Intent i = new Intent(getApplicationContext(),MapsActivity.class);
+                    startActivity(i);*/
+                    //locationManager.removeUpdates(locationListener);
+                    if(!bandera) {
+                        bandera=true;
+                        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        };
+       // location();
+    }
+
+    /*@Override
+    protected void onStart() {
+        location();
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        locationManager.removeUpdates(locationListener);
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        locationManager.removeUpdates(locationListener);
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        locationManager.removeUpdates(locationListener);
+        super.onDestroy();
+    }*/
+
+    private void location() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        android.Manifest.permission.INTERNET, android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+                return;
+            }
+        } else {
+            //location();
+        }
+        //if(!bandera)
+        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(locationManager.PASSIVE_PROVIDER, 0, 0, locationListener);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 10:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    location();
+                }
+        }
     }
 
     @Override
@@ -179,10 +286,10 @@ public class PrincipalActivity extends AppCompatActivity
             intent = new Intent(this, PuntajeActivity.class);
             startActivity(intent);
         }
-       //  else if (id == R.id.nav_mapa){
+         //else if (id == R.id.nav_map){
 
-         //   intent = new Intent(this, MapsActivity.class);
-           // startActivity(intent);
+          //  intent = new Intent(this, LocationActivity.class);
+            //startActivity(intent);
 
         //}
         else if (id == R.id.nav_config) {
@@ -405,6 +512,11 @@ public class PrincipalActivity extends AppCompatActivity
     @Override
     public void estadomusica(int musicstate) {
         editor_preferencias.putInt("estadosonido",musicstate).apply();
+    }
+
+    @Override
+    public void obtenerUbicacion() {
+        location();
     }
 
 
